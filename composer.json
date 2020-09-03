@@ -1,0 +1,31 @@
+{
+    "name": "bennothommo/october-cli",
+    "description": "A command-line helper tool for managing October CMS installations.",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ben Thomson",
+            "email": "git@alfreido.com"
+        }
+    ],
+    "require": {
+        "symfony/console": "^4.4.13"
+    },
+    "require-dev": {
+        "bamarni/composer-bin-plugin": "^1.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "BennoThommo\\OctoberCli\\": "src/"
+        }
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "composer bin box require --dev humbug/box"
+        ],
+        "post-update-cmd": [
+            "composer bin box require --dev humbug/box"
+        ]
+    }
+}
