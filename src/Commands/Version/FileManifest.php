@@ -1,5 +1,6 @@
 <?php namespace BennoThommo\OctoberCli\Commands\Version;
 
+use DirectoryIterator;
 use Exception;
 
 /**
@@ -8,7 +9,10 @@ use Exception;
  * This manifest is a file checksum of all files within this October CMS installation. When compared to the source
  * manifest, this allows us to determine the current installation's build number.
  *
- * @package october\system
+ * Based off the following implementation, but decoupled for this CLI helpers' use.
+ * https://github.com/octobercms/october/blob/develop/modules/system/classes/FileManifest.php
+ *
+ * @since 0.1.0
  * @author Ben Thomson
  */
 class FileManifest
@@ -31,7 +35,8 @@ class FileManifest
     /**
      * Constructor.
      *
-     * @param string $root The root folder to get the file list from.
+     * @param string $root The root folder to get the file list from. If not provided, defaults to the current working
+     *  directory.
      * @param array $modules An array of modules to include in the file manifest.
      */
     public function __construct($root = null, array $modules = null)
@@ -75,11 +80,33 @@ class FileManifest
     /**
      * Validates that the root folder provided contains an October CMS installation.
      *
+     * This looks for the following:
+     *  - a `modules` directory with, at the very least, a `system` subdirectory
+     *  - a `themes` directory
+     *  - a `config/app.php` file
+     *  - a `config/cms.php` file
+     *
+     * If all four of the above paths are present, it's reasonable to assume we're working with an October CMS install.
+     *
      * @throws Exception If the specified root does not contain an October CMS installation.
+     * @return void
      */
-    protected function validateRoot()
+    protected function validateRoot(): void
     {
+        $paths = [
+            $this->root . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR . 'system',
+            $this->root . DIRECTORY_SEPARATOR . 'themes',
+            $this->root . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'app.php',
+            $this->root . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'cms.php',
+        ];
 
+        foreach ($paths as $path) {
+            $realPath = realpath($path);
+
+            if (!$realPath) {
+                throw new Exception('The given path does not appear to be an October CMS installation (missing ' . $path . ')');
+            }
+        }
     }
 
     /**
@@ -94,6 +121,32 @@ class FileManifest
         }, $modules);
 
         return $this;
+    }
+
+    /**
+     * Detects the modules installed in the root folder and sets them in this manifest.
+     *
+     * @return void
+     */
+    public function detectModules(): void
+    {
+        $iterator = new DirectoryIterator($this->root . DIRECTORY_SEPARATOR . 'modules');
+        $validModules = ['system', 'cms', 'backend'];
+        $foundModules = [];
+
+        foreach ($iterator as $dir) {
+            if ($dir->isDot()) {
+                continue;
+            }
+            if (!$dir->isDir()) {
+                continue;
+            }
+            if (in_array($dir->getFilename(), $validModules)) {
+                $foundModules[] = $dir->getFilename();
+            }
+        }
+
+        $this->setModules($foundModules);
     }
 
     /**
@@ -164,11 +217,22 @@ class FileManifest
      */
     protected function findFiles(string $basePath)
     {
-        $datasource = new FileDatasource($basePath, new Filesystem);
+        $files = [];
 
-        $files = array_map(function ($path) use ($basePath) {
-            return $basePath . '/' . $path;
-        }, array_keys($datasource->getAvailablePaths()));
+        $iterator = function ($path) use (&$iterator, &$files) {
+            foreach (new \DirectoryIterator($path) as $item) {
+                if ($item->isDot() === true) {
+                    continue;
+                }
+                if ($item->isFile()) {
+                    $files[] = $item->getPathName();
+                }
+                if ($item->isDir()) {
+                    $iterator($item->getPathname());
+                }
+            }
+        };
+        $iterator($basePath);
 
         // Ensure files are sorted so they are in a consistent order, no matter the way the OS returns the file list.
         sort($files, SORT_NATURAL);
