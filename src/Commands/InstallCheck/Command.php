@@ -20,12 +20,6 @@ class Command extends BaseCommand
      */
     protected static $defaultName = 'install:check';
 
-    /** @var bool If any checks have failed */
-    protected $failed = false;
-
-    /** @var bool If any checks have been warned */
-    protected $warned = false;
-
     /**
      * @inheritDoc
      */
@@ -47,13 +41,35 @@ class Command extends BaseCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->line();
-        $this->checkPHPVersion();
-        $this->checkJSONExtension();
+        $this->checkPhpVersion();
+        $this->checkJsonExtension();
         $this->checkZipExtension();
         $this->checkFilterExtension();
+        $this->checkGdExtension();
+        $this->checkHashExtension();
+        $this->checkMbstringExtension();
+        $this->checkXmlExtension();
+        $this->checkOpensslExtension();
+        $this->checkUrlFopenSetting();
+        $this->line();
+
+        if ($this->failed) {
+            $this->error(
+                'Your current environment does not support October CMS. Please review the checklist above and follow'
+                . ' the suggestions in order to allow compatibility.'
+            );
+        } elseif ($this->warned) {
+            $this->warn(
+                'October CMS is compatible with your environment, but certain features may not work or may work'
+                . ' incorrectly. Please review the checklist above and follow the suggestions in order to improve'
+                . ' compatibility.'
+            );
+        } else {
+            $this->success('October CMS is fully compatible with your environment.');
+        }
     }
 
-    protected function checkPHPVersion()
+    protected function checkPhpVersion()
     {
         $this->doCheck('Installed PHP version is 7.2.9 or higher.');
 
@@ -72,7 +88,7 @@ class Command extends BaseCommand
         }
     }
 
-    protected function checkJSONExtension()
+    protected function checkJsonExtension()
     {
         $this->doCheck('The "json" extension is installed.');
 
@@ -114,6 +130,20 @@ class Command extends BaseCommand
         }
     }
 
+    protected function checkGdExtension()
+    {
+        $this->doCheck('The "gd" extension is installed.');
+
+        if (!extension_loaded('gd')) {
+            $this->checkFailed(
+                'The "gd" extension is missing.',
+                'Please install it, or recompile PHP with "--with-gd".'
+            );
+        } else {
+            $this->checkSuccessful();
+        }
+    }
+
     protected function checkHashExtension()
     {
         $this->doCheck('The "hash" extension is installed.');
@@ -122,6 +152,75 @@ class Command extends BaseCommand
             $this->checkFailed(
                 'The "hash" extension is missing.',
                 'Please install it, or recompile PHP without "--disable-hash".'
+            );
+        } else {
+            $this->checkSuccessful();
+        }
+    }
+
+    protected function checkMbstringExtension()
+    {
+        $this->doCheck('The "mbstring" extension is installed.');
+
+        if (!extension_loaded('mbstring')) {
+            $this->checkFailed(
+                'The "mbstring" extension is missing.',
+                'Please install it, or recompile PHP with "--enable-mbstring".'
+            );
+        } else {
+            $this->checkSuccessful();
+        }
+    }
+
+    protected function checkXmlExtension()
+    {
+        $this->doCheck('The "SimpleXML" extension is installed.');
+
+        if (!class_exists('SimpleXMLElement')) {
+            $this->checkFailed(
+                'The "SimpleXML" extension is missing.',
+                'Please install it, or recompile PHP without "--disable-simplexml".'
+            );
+        } else {
+            $this->checkSuccessful();
+        }
+    }
+
+    protected function checkOpensslExtension()
+    {
+        $this->doCheck('The "openssl" extension is installed and can support TLSv1.1 or TLSv1.2 connections.');
+
+        if (!extension_loaded('openssl')) {
+            $this->checkWarned(
+                'The "openssl" extension is missing.',
+                'This will prevent secure transfers, such as plugin updates, from being able to be made.',
+                'If possible, you should enable it or recompile PHP with "--with-openssl"'
+            );
+        } elseif (OPENSSL_VERSION_NUMBER < 0x1000100f) {
+            // Attempt to parse version number out, fallback to whole string value.
+            $opensslVersion = trim(strstr(OPENSSL_VERSION_TEXT, ' '));
+            $opensslVersion = substr($opensslVersion, 0, strpos($opensslVersion, ' '));
+            $opensslVersion = $opensslVersion ? $opensslVersion : OPENSSL_VERSION_TEXT;
+
+            $this->checkWarned(
+                'The OpenSSL library ('.$opensslVersion.') used by PHP does not support TLSv1.2 or TLSv1.1.',
+                'If possible you should upgrade OpenSSL to version 1.0.1 or above.'
+            );
+        } else {
+            $this->checkSuccessful();
+        }
+    }
+
+    protected function checkUrlFopenSetting()
+    {
+        $this->doCheck('The "allow_url_fopen" setting is enabled.');
+
+        if (!ini_get('allow_url_fopen')) {
+            $this->checkWarned(
+                'The allow_url_fopen setting is incorrect.',
+                'This will prevent transfers, such as plugin updates, from being able to be made.',
+                'Add the following to the end of your `php.ini`:',
+                '    allow_url_fopen = On'
             );
         } else {
             $this->checkSuccessful();

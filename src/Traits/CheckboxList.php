@@ -14,6 +14,12 @@ trait CheckboxList
     /** @var string Current checkbox text */
     protected $checkboxText = null;
 
+    /** @var bool If any checks have failed */
+    protected $failed = false;
+
+    /** @var bool If any checks have been warned */
+    protected $warned = false;
+
     /**
      * Writes out a checkbox item to console.
      *
