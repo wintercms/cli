@@ -31,6 +31,12 @@ mv october.phar october
 chmod a+x october
 ```
 
+Move this file into one of your `$PATH` directories to make this CLI helper available globally.
+
+```
+mv october /usr/bin/october
+```
+
 ## Usage
 
 Run the tool by running `october` (or `october.phar`). By default, it will show the help screen with command line options and available commands
