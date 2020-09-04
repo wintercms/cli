@@ -12,6 +12,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Get current time
+        uses: 1466587594/get-current-time@v2
+        id: current-time
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -19,6 +22,8 @@ jobs:
           tools: composer
       - name: Install Composer dependencies
         run: composer install --no-progress --no-suggest
+      - name: Update box.json
+        run: sed -i 's/##version##/${{ github.ref }}/g; s/##datetime##/${{ steps.current-time.outputs.time }}/g' box.json
       - name: Build project
         run: ./vendor/bin/box compile
       - name: Create release
