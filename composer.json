@@ -23,10 +23,10 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "composer bin box require --dev humbug/box"
+            "composer bin box require --dev --no-progress --no-suggest humbug/box"
         ],
         "post-update-cmd": [
-            "composer bin box require --dev humbug/box"
+            "composer bin box require --dev --no-progress --no-suggest humbug/box"
         ]
     }
 }
