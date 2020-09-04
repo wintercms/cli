@@ -8,7 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Check environment command
  *
- * @since 0.2.0
+ * @since 0.1.2
  * @author Ben Thomson
  */
 class Command extends BaseCommand
