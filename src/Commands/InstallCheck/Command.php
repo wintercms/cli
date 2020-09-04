@@ -20,12 +20,6 @@ class Command extends BaseCommand
      */
     protected static $defaultName = 'install:check';
 
-    /** @var Symfony\Component\Console\Output\ConsoleSectionOutput Current section */
-    protected $section = null;
-
-    /** @var string Current section text */
-    protected $sectionText = null;
-
     /** @var bool If any checks have failed */
     protected $failed = false;
 
