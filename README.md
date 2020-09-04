@@ -16,9 +16,10 @@ Options:
   -v|vv|vvv, --verbose  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
 
 Available commands:
-  help     Displays help for a command
-  list     Lists commands
-  version  Determines the version of October CMS in use.
+  help           Displays help for a command
+  list           Lists commands
+  version        Determines the version of October CMS in use.
+  install:check  Checks if the current environment can run October CMS.
 
 ```
 
@@ -52,3 +53,13 @@ october version [-d|--detailed] [path]
 This will detect the installed version of October CMS in the given path. The path is optional - if not provided, it will look in the current work directory.
 
 The optional `-d|--detailed` option will also print out a list of modified, created or deleted files in the October CMS installation, if any changes have been made to the core October CMS files.
+
+### `install:check`
+
+```
+october install:check
+```
+
+This command allows you to check that your current environment can run October CMS. 
+
+The command checks for your PHP version and various PHP extensions
