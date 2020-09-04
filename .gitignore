@@ -1,3 +1,7 @@
 # Composer
 vendor/*
 vendor-bin/*
+
+# Project
+october.phar
+private/*

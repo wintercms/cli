@@ -1,14 +1,19 @@
-<?php
-namespace BennoThommo\OctoberCli;
+<?php namespace BennoThommo\OctoberCli;
 
 use DirectoryIterator;
 use Symfony\Component\Console\Application as SymfonyApplication;
 
+/**
+ * CLI Application.
+ *
+ * @since 0.1.0
+ * @author Ben Thomson
+ */
 class Application extends SymfonyApplication
 {
     protected static $name = 'October CLI';
 
-    protected static $version = '0.1.0';
+    protected static $version = '@version@ (@datetime@)';
 
     protected static $logo = <<<LOGO
 ====================================================================

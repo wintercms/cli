@@ -1,0 +1,20 @@
+{
+    "main": "index.php",
+    "output": "october.phar",
+    "banner": [
+        "October CMS CLI helper.",
+        "",
+        "(c) 2020 Ben Thomson",
+        "",
+        "This source file is subject to the MIT license that is bundled",
+        "with this source code in the file LICENSE."
+    ],
+    "compression": "GZ",
+    "compactors": [
+        "KevinGH\\Box\\Compactor\\Php"
+    ],
+    "replacements": {
+        "version": "0.1.0"
+    },
+    "algorithm": "SHA256"
+}
