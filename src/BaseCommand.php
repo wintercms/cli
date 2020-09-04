@@ -42,7 +42,7 @@ class BaseCommand extends SymfonyCommand
      * @param string $text
      * @return void
      */
-    protected function line($text)
+    protected function line($text = '')
     {
         $this->output->writeln($text);
     }
