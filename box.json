@@ -14,7 +14,8 @@
         "KevinGH\\Box\\Compactor\\Php"
     ],
     "replacements": {
-        "version": "0.1.0"
+        "version": "##version##",
+        "datetime": "##datetime##"
     },
     "algorithm": "SHA256"
 }
