@@ -18,7 +18,9 @@ Options:
 Available commands:
   help           Displays help for a command
   list           Lists commands
+  self-update    [selfupdate] Self-updates the October CLI helper.
   version        Determines the version of October CMS in use.
+ install
   install:check  Checks if the current environment can run October CMS.
 
 ```
@@ -44,6 +46,15 @@ Run the tool by running `october` (or `october.phar`). By default, it will show 
 
 ## Commands
 
+### `self-update`
+
+```
+october self-update
+october selfupdate
+```
+
+This will update the October CLI helper to the latest version, if not already installed.
+
 ### `version`
 
 ```
@@ -62,4 +73,4 @@ october install:check
 
 This command allows you to check that your current environment can run October CMS. 
 
-The command checks for your PHP version and various PHP extensions
+The command checks that your PHP version is compatible, ensures that the necessary extensions are installed and that configuration settings for PHP are correctly set. If any requirements are not met, the command will give you suggestions on the necessary steps to take in order to make your environment compatible for October CMS.
