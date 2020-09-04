@@ -16,9 +16,10 @@ Options:
   -v|vv|vvv, --verbose  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
 
 Available commands:
-  help     Displays help for a command
-  list     Lists commands
-  version  Determines the version of October CMS in use.
+  help           Displays help for a command
+  list           Lists commands
+  version        Determines the version of October CMS in use.
+  install:check  Checks if the current environment can run October CMS.
 
 ```
 
