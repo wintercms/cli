@@ -33,6 +33,16 @@ class BaseCommand extends SymfonyCommand
         $outputStyle = new OutputFormatterStyle('yellow');
         $output->getFormatter()->setStyle('warn', $outputStyle);
 
+        // Add danger style
+        $outputStyle = new OutputFormatterStyle('red');
+        $output->getFormatter()->setStyle('danger', $outputStyle);
+
+        // Add bold style
+        $outputStyle = new OutputFormatterStyle(null, null, [
+            'bold'
+        ]);
+        $output->getFormatter()->setStyle('bold', $outputStyle);
+
         return parent::run($input, $output);
     }
 
@@ -100,6 +110,17 @@ class BaseCommand extends SymfonyCommand
     protected function warn($text)
     {
         $this->warning($text);
+    }
+
+    /**
+     * Display a danger message.
+     *
+     * @param string $text
+     * @return void
+     */
+    protected function danger($text)
+    {
+        $this->output->writeln('<danger>' . $text . '</danger>');
     }
 
     /**
