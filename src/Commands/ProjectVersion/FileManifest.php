@@ -1,4 +1,4 @@
-<?php namespace BennoThommo\OctoberCli\Commands\Version;
+<?php namespace BennoThommo\OctoberCli\Commands\ProjectVersion;
 
 use DirectoryIterator;
 use Exception;

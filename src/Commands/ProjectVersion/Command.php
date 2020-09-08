@@ -1,4 +1,4 @@
-<?php namespace BennoThommo\OctoberCli\Commands\Version;
+<?php namespace BennoThommo\OctoberCli\Commands\ProjectVersion;
 
 use BennoThommo\OctoberCli\BaseCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -17,7 +17,7 @@ class Command extends BaseCommand
     /**
      * @inheritDoc
      */
-    protected static $defaultName = 'version';
+    protected static $defaultName = 'project:version';
 
     /**
      * @inheritDoc
@@ -26,12 +26,12 @@ class Command extends BaseCommand
     {
         $this
             // the short description shown while running "php bin/console list"
-            ->setDescription('Determines the version of October CMS in use.')
+            ->setDescription('Determines the version of October CMS in use in a project.')
 
             // the full command description shown when running the command with
             // the "--help" option
             ->setHelp(
-                'This command allows you to scan an October CMS installation and determine the version (build)'
+                'This command allows you to scan an October CMS project and determine the version (build)'
                 . ' in use.'
             )
 
@@ -39,7 +39,7 @@ class Command extends BaseCommand
             ->addArgument(
                 'path',
                 InputArgument::OPTIONAL,
-                'The path to the October CMS installation.'
+                'The path to the October CMS project.'
             )
 
             // options
