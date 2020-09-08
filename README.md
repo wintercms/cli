@@ -54,7 +54,7 @@ Once done, you can then use the `october github:token` command, adding the token
 
 ## Usage
 
-Run the tool by running `october` (or `october.phar`). By default, it will show the help screen with command line options and available commands
+Run the tool by running `october` (or `october.phar`). By default, it will show the help screen with command line options and available commands. You can also add the `--help` option after any command to get help on specific commands.
 
 ## Commands
 
