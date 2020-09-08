@@ -4,8 +4,6 @@ use BennoThommo\OctoberCli\BaseCommand;
 use BennoThommo\OctoberCli\Commands\ProjectVersion\FileManifest;
 use BennoThommo\OctoberCli\Commands\ProjectVersion\SourceManifest;
 use BennoThommo\OctoberCli\GitHub\Token;
-use Exception;
-use Github\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
