@@ -7,8 +7,9 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Version command
+ * Project version command
  *
+ * @since 0.2.1 Renamed to "project:version" (previously "version")
  * @since 0.1.0
  * @author Ben Thomson
  */
