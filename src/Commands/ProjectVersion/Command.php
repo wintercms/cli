@@ -60,47 +60,57 @@ class Command extends BaseCommand
     {
         $manifest = new FileManifest($input->getArgument('path'));
 
-        $this->comment('Detecting October CMS build...');
+        $this->comment('Detecting October CMS build...', OutputInterface::VERBOSITY_VERBOSE);
 
         $source = new SourceManifest();
         $build = $source->compare($manifest, $input->getOption('detailed'));
 
         if (!$build['confident']) {
-            $this->warn('We could not accurately determine your October CMS build due to the number of modifications. The closest detected build is October CMS build ' . $build['build'] . '.');
+            $this->warn(
+                'We could not accurately determine your October CMS build due to the number of modifications. The' .
+                ' closest detected build is October CMS build ' . $build['build'] . '.',
+                OutputInterface::VERBOSITY_QUIET
+            );
         } else if ($build['modified']) {
-            $this->info('Detected a modified version of October CMS build ' . $build['build'] . '.');
+            $this->info(
+                'Detected a modified version of October CMS build ' . $build['build'] . '.',
+                OutputInterface::VERBOSITY_QUIET
+            );
         } else {
-            $this->info('Detected October CMS build ' . $build['build'] . '.');
+            $this->info(
+                'Detected October CMS build ' . $build['build'] . '.',
+                OutputInterface::VERBOSITY_QUIET
+            );
         }
 
         if ($input->getOption('detailed') && $build['modified']) {
-            $this->line('');
-            $this->comment('We have detected the following modifications:');
+            $this->line('', OutputInterface::VERBOSITY_QUIET);
+            $this->comment('We have detected the following modifications:', OutputInterface::VERBOSITY_QUIET);
 
             if (count($build['changes']['added'] ?? [])) {
-                $this->line('');
-                $this->info('Files added:');
+                $this->line('', OutputInterface::VERBOSITY_QUIET);
+                $this->info('Files added:', OutputInterface::VERBOSITY_QUIET);
 
                 foreach (array_keys($build['changes']['added']) as $file) {
-                    $this->line(' - ' . $file);
+                    $this->line(' - ' . $file, OutputInterface::VERBOSITY_QUIET);
                 }
             }
 
             if (count($build['changes']['modified'] ?? [])) {
-                $this->line('');
-                $this->info('Files modified:');
+                $this->line('', OutputInterface::VERBOSITY_QUIET);
+                $this->info('Files modified:', OutputInterface::VERBOSITY_QUIET);
 
                 foreach (array_keys($build['changes']['modified']) as $file) {
-                    $this->line(' - ' . $file);
+                    $this->line(' - ' . $file, OutputInterface::VERBOSITY_QUIET);
                 }
             }
 
             if (count($build['changes']['removed'] ?? [])) {
-                $this->line('');
-                $this->info('Files removed:');
+                $this->line('', OutputInterface::VERBOSITY_QUIET);
+                $this->info('Files removed:', OutputInterface::VERBOSITY_QUIET);
 
                 foreach ($build['changes']['removed'] as $file) {
-                    $this->line(' - ' . $file);
+                    $this->line(' - ' . $file, OutputInterface::VERBOSITY_QUIET);
                 }
             }
         }
