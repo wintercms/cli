@@ -56,16 +56,18 @@ class Command extends BaseCommand
         if ($this->failed) {
             $this->error(
                 'Your current environment does not support October CMS. Please review the checklist above and follow'
-                . ' the suggestions in order to allow compatibility.'
+                . ' the suggestions in order to allow compatibility.',
+                OutputInterface::VERBOSITY_QUIET
             );
         } elseif ($this->warned) {
             $this->warn(
                 'October CMS is compatible with your environment, but certain features may not work or may work'
                 . ' incorrectly. Please review the checklist above and follow the suggestions in order to improve'
-                . ' compatibility.'
+                . ' compatibility.',
+                OutputInterface::VERBOSITY_QUIET
             );
         } else {
-            $this->success('October CMS is fully compatible with your environment.');
+            $this->success('October CMS is fully compatible with your environment.', OutputInterface::VERBOSITY_QUIET);
         }
     }
 
