@@ -1,9 +1,11 @@
 <?php namespace BennoThommo\OctoberCli;
 
+use RuntimeException;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\Question;
 
 /**
  * Base command.
@@ -15,7 +17,10 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class BaseCommand extends SymfonyCommand
 {
-    /** @var OutputInterface Output interface */
+    /** @var InputInteface */
+    protected $input;
+
+    /** @var OutputInterface */
     protected $output;
 
     /**
@@ -23,6 +28,7 @@ class BaseCommand extends SymfonyCommand
      */
     public function run(InputInterface $input, OutputInterface $output)
     {
+        $this->input = $input;
         $this->output = $output;
 
         // Add success style
@@ -140,5 +146,70 @@ class BaseCommand extends SymfonyCommand
     protected function error(string $text, int $verbosity = OutputInterface::VERBOSITY_NORMAL): void
     {
         $this->output->writeln('<error>' . $text . '</error>', $verbosity);
+    }
+
+    /**
+     * Prompts the user for an answer to a question.
+     *
+     * @param string $text
+     * @param mixed $default
+     * @param bool $hidden
+     * @return mixed
+     */
+    protected function prompt(string $question, $default = null, bool $hidden = false)
+    {
+        $askHelper = $this->getHelper('question');
+
+        $prompt = PHP_EOL . ' ' . $question;
+        if (!is_null($default)) {
+            $prompt .= ' [<info>' . (string) $default . '</info>]';
+        }
+        $prompt .= PHP_EOL . ' > ';
+
+        $questionObj = new Question($prompt, $default);
+        if ($hidden) {
+            $questionObj->setHidden(true);
+            $questionObj->setHiddenFallback(false);
+        }
+
+        return $askHelper->ask(
+            $this->input,
+            $this->output,
+            $questionObj
+        );
+    }
+
+    /**
+     * Prompts the user for a number as an answer to a question
+     *
+     * @param string $text
+     * @param int|null $default
+     * @return int
+     */
+    protected function promptInt(string $question, ?int $default = null): int
+    {
+        $askHelper = $this->getHelper('question');
+
+        $prompt = PHP_EOL . ' ' . $question;
+        if (!is_null($default)) {
+            $prompt .= ' [<info>' . (string) $default . '</info>]';
+        }
+        $prompt .= PHP_EOL . ' > ';
+
+        $questionObj = new Question($prompt, $default);
+        $questionObj->setValidator(function ($answer) {
+            if (!is_int($answer)) {
+                throw new RuntimeException('Value must be a number');
+            }
+
+            return $answer;
+        });
+        $questionObj->setMaxAttempts(2);
+
+        return (int) $askHelper->ask(
+            $this->input,
+            $this->output,
+            $questionObj
+        );
     }
 }
