@@ -71,7 +71,7 @@ class Command extends BaseCommand
                 ' closest detected build is October CMS build ' . $build['build'] . '.',
                 OutputInterface::VERBOSITY_QUIET
             );
-        } else if ($build['modified']) {
+        } elseif ($build['modified']) {
             $this->info(
                 'Detected a modified version of October CMS build ' . $build['build'] . '.',
                 OutputInterface::VERBOSITY_QUIET

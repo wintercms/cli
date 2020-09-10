@@ -104,7 +104,9 @@ class FileManifest
             $realPath = realpath($path);
 
             if (!$realPath) {
-                throw new Exception('The given path does not appear to be an October CMS installation (missing ' . $path . ')');
+                throw new Exception(
+                    'The given path does not appear to be an October CMS installation (missing ' . $path . ')'
+                );
             }
         }
     }

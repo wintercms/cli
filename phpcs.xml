@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<ruleset name="October CLI">
+    <description>The coding standard for October CLI.</description>
+    <rule ref="PSR2" />
+
+    <rule ref="PSR1.Classes.ClassDeclaration.MultipleClasses">
+        <!--
+        Test fixtures and cases can have multiple classes defined, only if they are directly related to the test, or are
+        extended classes
+        -->
+        <exclude-pattern>*/tests/*</exclude-pattern>
+    </rule>
+
+    <file>src/</file>
+
+    <!-- Ignore vendor files -->
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+</ruleset>
