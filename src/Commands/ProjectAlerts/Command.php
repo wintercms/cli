@@ -54,7 +54,7 @@ class Command extends BaseCommand
         // Get build
         $manifest = new FileManifest($input->getArgument('path'));
 
-        $this->comment('Checking advisory database...');
+        $this->comment('Checking advisory database...', OutputInterface::VERBOSITY_VERBOSE);
 
         $source = new SourceManifest();
         $build = $source->compare($manifest);
@@ -69,7 +69,10 @@ class Command extends BaseCommand
         $advisories = $this->getAdvisories($version);
 
         if (!count($advisories)) {
-            $this->success('Your version of October CMS (' . $version . ') has no known security advisories.');
+            $this->success(
+                'Your version of October CMS (' . $version . ') has no known security advisories.',
+                OutputInterface::VERBOSITY_QUIET
+            );
             return 0;
         }
 
@@ -80,7 +83,8 @@ class Command extends BaseCommand
                     ? '1 known security advisory'
                     : count($advisories) . ' known security advisories'
             )
-            . ':'
+            . ':',
+            OutputInterface::VERBOSITY_QUIET
         );
 
         $minReqVersion = null;
@@ -108,8 +112,11 @@ class Command extends BaseCommand
             }
         }
 
-        $this->line('');
-        $this->error('You should upgrade to at least October CMS ' . $minReqVersion . ' as soon as possible.');
+        $this->line('', OutputInterface::VERBOSITY_QUIET);
+        $this->error(
+            'You should upgrade to at least October CMS ' . $minReqVersion . ' as soon as possible.',
+            OutputInterface::VERBOSITY_QUIET
+        );
 
         return 1;
     }
