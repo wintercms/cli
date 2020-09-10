@@ -32,7 +32,9 @@ class Command extends BaseCommand
             // the "--help" option
             ->setHelp(
                 'Allows you to store a GitHub Access Token locally. This is used for some functions of the CLI helper'
-                . ' which may be subject to GitHub API\'s rate limits.'
+                . ' which may be subject to GitHub API\'s rate limits.' . "\n\n"
+                . 'If you wish to create the token necessary, please visit the following URL:' . "\n"
+                . 'https://github.com/settings/tokens/new?scopes=public_repo&description=October%20CLI%20Helper'
             )
 
             // arguments
