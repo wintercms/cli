@@ -54,7 +54,7 @@ class Command extends BaseCommand
         $latestVersion = str_replace('v', '', $release['tag_name']);
 
         if (version_compare($currentVersion, $latestVersion, '>=')) {
-            $this->success('You already have the latest version of October CLI');
+            $this->success('You already have the latest version of October CLI', OutputInterface::VERBOSITY_QUIET);
             return 0;
         }
 
@@ -86,6 +86,6 @@ class Command extends BaseCommand
             throw new Exception('Unable to download new version of October CLI - ' . $e->getMessage());
         }
 
-        $this->success('Updated October CLI to v' . $latestVersion);
+        $this->success('Updated October CLI to v' . $latestVersion, OutputInterface::VERBOSITY_QUIET);
     }
 }
