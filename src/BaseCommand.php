@@ -50,87 +50,95 @@ class BaseCommand extends SymfonyCommand
      * Write a line to output.
      *
      * @param string $text
+     * @param int $verbosity
      * @return void
      */
-    protected function line($text = '')
+    protected function line(string $text = '', int $verbosity = OutputInterface::VERBOSITY_NORMAL): void
     {
-        $this->output->writeln($text);
+        $this->output->writeln($text, $verbosity);
     }
 
     /**
      * Display a comment.
      *
-     * @param string $text
+     * @param mixed $text
+     * @param int $verbosity
      * @return void
      */
-    protected function comment($text)
+    protected function comment(string $text, int $verbosity = OutputInterface::VERBOSITY_NORMAL): void
     {
-        $this->output->writeln('<comment>' . $text . '</comment>');
+        $this->output->writeln('<comment>' . $text . '</comment>', $verbosity);
     }
 
     /**
-     * Display an informational message.
+     * Display an info message.
      *
      * @param string $text
+     * @param int $verbosity
      * @return void
      */
-    protected function info($text)
+    protected function info(string $text, int $verbosity = OutputInterface::VERBOSITY_NORMAL): void
     {
-        $this->output->writeln('<info>' . $text . '</info>');
+        $this->output->writeln('<info>' . $text . '</info>', $verbosity);
     }
 
     /**
      * Display a success message.
      *
      * @param string $text
+     * @param int $verbosity
      * @return void
      */
-    protected function success($text)
+    protected function success(string $text, int $verbosity = OutputInterface::VERBOSITY_NORMAL): void
     {
-        $this->output->writeln('<success>' . $text . '</success>');
+        $this->output->writeln('<success>' . $text . '</success>', $verbosity);
     }
 
     /**
      * Display a warning message.
      *
      * @param string $text
+     * @param int $verbosity
      * @return void
      */
-    protected function warning($text)
+    protected function warning(string $text, int $verbosity = OutputInterface::VERBOSITY_NORMAL): void
     {
-        $this->output->writeln('<warn>' . $text . '</warn>');
+        $this->output->writeln('<warn>' . $text . '</warn>', $verbosity);
     }
 
     /**
      * Display a warning message.
      *
      * @param string $text
+     * @param int $verbosity
      * @return void
      */
-    protected function warn($text)
+    protected function warn(string $text, int $verbosity = OutputInterface::VERBOSITY_NORMAL): void
     {
-        $this->warning($text);
+        $this->warning($text, $verbosity);
     }
 
     /**
      * Display a danger message.
      *
      * @param string $text
+     * @param int $verbosity
      * @return void
      */
-    protected function danger($text)
+    protected function danger(string $text, int $verbosity = OutputInterface::VERBOSITY_NORMAL): void
     {
-        $this->output->writeln('<danger>' . $text . '</danger>');
+        $this->output->writeln('<danger>' . $text . '</danger>', $verbosity);
     }
 
     /**
      * Display an error message.
      *
      * @param string $text
+     * @param int $verbosity
      * @return void
      */
-    protected function error($text)
+    protected function error(string $text, int $verbosity = OutputInterface::VERBOSITY_NORMAL): void
     {
-        $this->output->writeln('<error>' . $text . '</error>');
+        $this->output->writeln('<error>' . $text . '</error>', $verbosity);
     }
 }
