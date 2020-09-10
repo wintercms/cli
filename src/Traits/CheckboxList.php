@@ -20,6 +20,12 @@ trait CheckboxList
     /** @var bool If any checks have been warned */
     protected $warned = false;
 
+    /** @var int Checkbox verbosity */
+    protected $checkboxVerbosity = OutputInterface::VERBOSITY_NORMAL;
+
+    /** @var int Comment verbosity */
+    protected $commentVerbosity = OutputInterface::VERBOSITY_NORMAL;
+
     /**
      * Writes out a checkbox item to console.
      *
@@ -30,14 +36,17 @@ trait CheckboxList
     {
         $this->checkbox = $this->output->section();
         $this->checkboxText = $text;
-        $this->checkbox->writeln('[ ] ' . $text);
+        $this->checkbox->writeln('[ ] ' . $text, $this->checkboxVerbosity);
     }
 
     protected function checkFailed()
     {
-        $this->checkbox->overwrite('[<error>X</error>] ' . $this->checkboxText);
+        $this->checkbox->overwrite('[<error>X</error>] ' . $this->checkboxText, $this->checkboxVerbosity);
         if (func_num_args() > 0) {
-            $this->checkbox->writeln("<comment>      " . implode("\n      ", func_get_args()) . '</comment>');
+            $this->checkbox->writeln(
+                '<comment>      ' . implode("\n      ", func_get_args()) . '</comment>',
+                $this->commentVerbosity
+            );
         }
         $this->failed = true;
     }
@@ -46,7 +55,10 @@ trait CheckboxList
     {
         $this->checkbox->overwrite('[<warn>W</warn>] ' . $this->checkboxText);
         if (func_num_args() > 0) {
-            $this->checkbox->writeln("<comment>      " . implode("\n      ", func_get_args()) . '</comment>');
+            $this->checkbox->writeln(
+                '<comment>      ' . implode("\n      ", func_get_args()) . '</comment>',
+                $this->commentVerbosity
+            );
         }
         $this->warned = true;
     }
@@ -55,7 +67,10 @@ trait CheckboxList
     {
         $this->checkbox->overwrite('[<success>✓</success>] ' . $this->checkboxText);
         if (func_num_args() > 0) {
-            $this->checkbox->writeln("<comment>      " . implode("\n      ", func_get_args()) . '</comment>');
+            $this->checkbox->writeln(
+                '<comment>      ' . implode("\n      ", func_get_args()) . '</comment>',
+                $this->commentVerbosity
+            );
         }
     }
 }
