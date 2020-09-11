@@ -207,18 +207,7 @@ class Command extends BaseCommand
 
         $this->getAppSettings($input, $output);
         $this->getDbSettings($input, $output);
-
-        print_r([
-            'appName' => $this->appName,
-            'appUrl' => $this->appUrl,
-            'dbType' => $this->dbType,
-            'dbHost' => $this->dbHost,
-            'dbPort' => $this->dbPort,
-            'dbName' => $this->dbName,
-            'dbUser' => $this->dbUser,
-            'dbPass' => $this->dbPass,
-        ]);
-        die();
+        $this->getAdminSettings($input, $output);
 
         // switch ($mode) {
         //     case 'easy':
@@ -231,6 +220,18 @@ class Command extends BaseCommand
         //         $this->doContributorInstall($input, $output, $path);
         //         break;
         // }
+
+        print_r([
+            'appName' => $this->appName,
+            'appUrl' => $this->appUrl,
+            'dbType' => $this->dbType,
+            'dbHost' => $this->dbHost,
+            'dbPort' => $this->dbPort,
+            'dbName' => $this->dbName,
+            'dbUser' => $this->dbUser,
+            'dbPass' => $this->dbPass,
+        ]);
+        die();
     }
 
     /**
@@ -318,9 +319,9 @@ class Command extends BaseCommand
 
         $dbTypes = [
             'mysql',
-            'postgres',
+            'pgsql',
             'sqlite',
-            'sqlserver'
+            'sqlsrv'
         ];
 
         if (is_null($input->getOption('db-type')) || !in_array($input->getOption('db-type'), $dbTypes)) {
@@ -331,9 +332,9 @@ class Command extends BaseCommand
                 '<comment>Please select the database type you wish to use.</comment>' . PHP_EOL . PHP_EOL .
                 ' - <bold>mysql:</bold> (default) MySQL / MariaDB' .
                 ' marketplace.' . PHP_EOL .
-                ' - <bold>postgres:</bold> PostgreSQL.' . PHP_EOL .
+                ' - <bold>pgsql:</bold> PostgreSQL.' . PHP_EOL .
                 ' - <bold>sqlite:</bold> SQLite' . PHP_EOL .
-                ' - <bold>sqlserver:</bold> Microsoft SQL Server' . PHP_EOL,
+                ' - <bold>sqlsrv:</bold> Microsoft SQL Server' . PHP_EOL,
                 $dbTypes,
                 'mysql'
             );
@@ -344,13 +345,13 @@ class Command extends BaseCommand
             case 'mysql':
                 $this->getMysqlSettings($input, $output);
                 break;
-            case 'postgres':
+            case 'pgsql':
                 $this->getPostgresSettings($input, $output);
                 break;
             case 'sqlite':
                 $this->getSqliteSettings($input, $output);
                 break;
-            case 'sqlserver':
+            case 'sqlsrv':
                 $this->getSqlServerSettings($input, $output);
                 break;
         }
@@ -386,12 +387,41 @@ class Command extends BaseCommand
         $this->dbName = $input->getOption('db-name') ?? $this->prompt('Database name?', $this->dbName);
 
         // Database username
-        $this->dbName = $input->getOption('db-user') ?? $this->prompt('PostgreSQL username?', $this->dbName);
+        $this->dbUser = $input->getOption('db-user') ?? $this->prompt('PostgreSQL username?', $this->dbUser);
 
         // Database password
-        $this->dbName = $input->getOption('db-pass') ?? $this->prompt('PostgreSQL password?', $this->dbName, true);
+        $this->dbPass = $input->getOption('db-pass') ?? $this->prompt('PostgreSQL password?', $this->dbPass, true);
     }
 
+    protected function getSqliteSettings(InputInterface $input, OutputInterface $output)
+    {
+        // Database path
+        $this->dbName = $input->getOption('db-name') ?? $this->prompt(
+            'SQLite database path?',
+            'storage/database.sqlite',
+        );
+    }
+
+    protected function getSqlServerSettings(InputInterface $input, OutputInterface $output)
+    {
+        // Database host
+        $this->dbHost = $input->getOption('db-host') ?? $this->prompt(
+            'SQL Server host address?',
+            '192.168.0.1\\SQLEXPRESS'
+        );
+
+        // Database port
+        $this->dbPort = $input->getOption('db-port') ?? $this->promptInt('SQL Server port', 1433);
+
+        // Database name
+        $this->dbName = $input->getOption('db-name') ?? $this->prompt('Database name?', $this->dbName);
+
+        // Database username
+        $this->dbUser = $input->getOption('db-user') ?? $this->prompt('SQL Server username?', $this->dbUser);
+
+        // Database password
+        $this->dbPass = $input->getOption('db-pass') ?? $this->prompt('SQL Server password?', $this->dbPass, true);
+    }
 
     protected function runCommand(InputInterface $input, OutputInterface $output, string $command): Process
     {
