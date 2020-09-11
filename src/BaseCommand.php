@@ -198,7 +198,7 @@ class BaseCommand extends SymfonyCommand
 
         $questionObj = new Question($prompt, $default);
         $questionObj->setValidator(function ($answer) {
-            if (!is_int($answer)) {
+            if (!preg_match('/^(0|-?[1-9][0-9]*)$/', $answer)) {
                 throw new RuntimeException('Value must be a number');
             }
 
