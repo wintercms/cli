@@ -4,6 +4,8 @@ use DirectoryIterator;
 use Exception;
 use RuntimeException;
 use BennoThommo\OctoberCli\BaseCommand;
+use BennoThommo\OctoberCli\GitHub\Token;
+use BennoThommo\OctoberCli\Traits\CheckboxList;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -20,8 +22,19 @@ use Throwable;
  */
 class Command extends BaseCommand
 {
+    use CheckboxList;
+
     /** @inheritDoc */
     protected static $defaultName = 'install';
+
+    /** @var GitHub\Client GitHub Client instance */
+    protected $github = null;
+
+    /** @var string `git` command path */
+    protected $gitPath = null;
+
+    /** @var string `composer` command path */
+    protected $composerPath = null;
 
     /** @var string Application name */
     protected $appName = 'October CMS';
@@ -47,6 +60,15 @@ class Command extends BaseCommand
     /** @var string Database name (or storage location) */
     protected $dbName = 'october';
 
+    /** @var string Administrator account username */
+    protected $adminUsername = 'admin';
+
+    /** @var string Administrator account password */
+    protected $adminPassword = null;
+
+    /** @var string Administrator account email address */
+    protected $adminEmail = null;
+
     /**
      * @inheritDoc
      */
@@ -64,7 +86,8 @@ class Command extends BaseCommand
                 ' - Easy install: Installs October CMS using the October CMS marketplace.' . PHP_EOL .
                 ' - Composer install: Installs October CMS using Composer.' . PHP_EOL .
                 ' - Contributor install: Installs October CMS using Composer, and sets up the installation in order' .
-                ' to allow the user to contribute to October CMS.'
+                ' to allow the user to contribute to October CMS, including setting up a fork in GitHub and' .
+                ' configuring a local Git repository.'
             )
 
             // arguments
@@ -149,6 +172,24 @@ class Command extends BaseCommand
                 InputOption::VALUE_REQUIRED,
                 'Specifies the database password.'
             )
+            ->addOption(
+                'admin-user',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Specifies the administrator account username.'
+            )
+            ->addOption(
+                'admin-pass',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Specifies the administrator account password.'
+            )
+            ->addOption(
+                'admin-email',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Specifies the administrator account email address.'
+            )
         ;
     }
 
@@ -174,11 +215,33 @@ class Command extends BaseCommand
                 ' marketplace.' . PHP_EOL .
                 ' - <bold>Composer install (composer):</bold> Installs October CMS using Composer.' . PHP_EOL .
                 ' - <bold>Contributor install (contributor):</bold> Installs October CMS using Composer, and sets up' .
-                ' the installation in order to allow the user to contribute to October CMS.' . PHP_EOL,
+                ' the installation in order to allow the user to contribute to October CMS, including setting up a' .
+                ' fork in GitHub and configuring a local Git repository.' . PHP_EOL,
                 ['easy', 'composer', 'contributor'],
                 'easy'
             );
             $mode = $askHelper->ask($input, $output, $question);
+        }
+
+        // Check that a GitHub token is available for contributor installation
+        if ($mode === 'contributor') {
+            $this->github = new \Github\Client();
+            $token = (new Token())->read();
+
+            $this->github->authenticate($token, null, \Github\Client::AUTH_ACCESS_TOKEN);
+        }
+
+        // Check that `git` is installed
+        if ($mode === 'contributor') {
+            $this->gitPath = $this->getGitPath();
+
+            echo $this->gitPath;
+            die();
+        }
+
+        // Check that `composer` is installed
+        if ($mode === 'contributor' || $mode === 'composer') {
+            $this->composerPath = $this->getComposerPath();
         }
 
         // Check (or clear) the current path
@@ -209,17 +272,17 @@ class Command extends BaseCommand
         $this->getDbSettings($input, $output);
         $this->getAdminSettings($input, $output);
 
-        // switch ($mode) {
-        //     case 'easy':
-        //         $this->doEasyInstall($input, $output, $path);
-        //         break;
-        //     case 'composer':
-        //         $this->doComposerInstall($input, $output, $path);
-        //         break;
-        //     case 'contributor':
-        //         $this->doContributorInstall($input, $output, $path);
-        //         break;
-        // }
+        switch ($mode) {
+            // case 'easy':
+            //     $this->doEasyInstall($input, $output, $path);
+            //     break;
+            // case 'composer':
+            //     $this->doComposerInstall($input, $output, $path);
+            //     break;
+            case 'contributor':
+                $this->doContributorInstall($input, $output, $path);
+                break;
+        }
 
         print_r([
             'appName' => $this->appName,
@@ -330,8 +393,7 @@ class Command extends BaseCommand
             $question = new ChoiceQuestion(
                 PHP_EOL .
                 '<comment>Please select the database type you wish to use.</comment>' . PHP_EOL . PHP_EOL .
-                ' - <bold>mysql:</bold> (default) MySQL / MariaDB' .
-                ' marketplace.' . PHP_EOL .
+                ' - <bold>mysql:</bold> (default) MySQL / MariaDB' . PHP_EOL .
                 ' - <bold>pgsql:</bold> PostgreSQL.' . PHP_EOL .
                 ' - <bold>sqlite:</bold> SQLite' . PHP_EOL .
                 ' - <bold>sqlsrv:</bold> Microsoft SQL Server' . PHP_EOL,
@@ -423,14 +485,83 @@ class Command extends BaseCommand
         $this->dbPass = $input->getOption('db-pass') ?? $this->prompt('SQL Server password?', $this->dbPass, true);
     }
 
-    protected function runCommand(InputInterface $input, OutputInterface $output, string $command): Process
+    protected function getAdminSettings(InputInterface $input, OutputInterface $output)
     {
-        if ($input->getOption('no-ansi')) {
-            $command .= ' --no-ansi';
+        $this->info('Determine administrator account settings', OutputInterface::VERBOSITY_VERBOSE);
+
+        // Admin username
+        $this->adminUsername = $input->getOption('admin-user') ?? $this->prompt(
+            'Admin username?',
+            $this->adminUsername
+        );
+
+        // Admin password
+        $this->adminPassword = $input->getOption('admin-pass') ?? $this->prompt(
+            'Admin password?',
+            $this->adminPassword,
+            true
+        );
+
+        // Admin email
+        $this->adminEmail = $input->getOption('admin-email') ?? $this->prompt(
+            'Admin email address?',
+            $this->adminEmail
+        );
+    }
+
+    protected function doContributorInstall(InputInterface $input, OutputInterface $output, string $path)
+    {
+        $this->line();
+
+        // Add a slight pause to indicate installation
+        usleep(650000);
+
+        $this->info('Installing October CMS...');
+
+        // Set up fork
+        $this->doCheck('Fork October CMS repository');
+
+        // Check for the presence of a fork, and create a fork if not available
+        $ownedRepos = $this->github->currentUser()->repositories();
+        $found = false;
+        $repository = null;
+
+        foreach ($ownedRepos as $repo) {
+            if ($repo['name'] === 'october') {
+                $found = true;
+                $repository = $repo;
+                break;
+            }
         }
 
-        if ($input->getOption('quiet')) {
-            $command .= ' --quiet';
+        if (!$found) {
+            try {
+                $repository = $this->github->api('repo')->forks()->create('octobercms', 'october');
+                $this->checkSuccessful('October CMS repository forked to ' . $repository['html_url'] . '.');
+            } catch (Throwable $e) {
+                $this->checkFailed('Unable to fork repository.', $e->getMessage());
+            }
+        } else {
+            $this->checkSuccessful('Forked repository already available at ' . $repository['html_url'] . '.');
+        }
+
+        // Install
+    }
+
+    protected function runCommand(
+        InputInterface $input = null,
+        OutputInterface $output = null,
+        string $command,
+        bool $return = false
+    ) {
+        if (isset($input)) {
+            if ($input->getOption('no-ansi')) {
+                $command .= ' --no-ansi';
+            }
+
+            if ($input->getOption('quiet')) {
+                $command .= ' --quiet';
+            }
         }
 
         $process = Process::fromShellCommandline($command, null, null, null, null);
@@ -443,10 +574,48 @@ class Command extends BaseCommand
             }
         }
 
-        $process->run(function ($type, $line) use ($output) {
-            $output->write('    ' . $line);
-        });
+        if ($return) {
+            $returned = [];
+            $process->run(function ($type, $line) use ($returned) {
+                $returned[] = $line;
+            });
 
-        return $process;
+            return implode(PHP_EOL, $returned);
+        } else {
+            if (!isset($output)) {
+                throw new Exception('You must provide an output interface.');
+            }
+
+            $process->run(function ($type, $line) use ($output) {
+                $output->write('    ' . $line);
+            });
+
+            return $process;
+        }
+    }
+
+    protected function getGitPath()
+    {
+        if (PHP_OS_FAMILY == 'Windows') {
+            $command = 'where.exe git.exe';
+        } else {
+            $command = 'which git 2>&1';
+        }
+
+        $return = $this->runCommand(null, null, $command, true);
+
+        if (empty($return)) {
+            throw new Exception('Unable to find git binary. Please ensure the `git` command is installed.');
+        }
+
+        if (strpos($return, PHP_EOL) !== false) {
+            $lines = array_filter(explode(PHP_EOL, $return), function ($item) {
+                return !empty($item);
+            });
+        } else {
+            $lines = [$return];
+        }
+
+        return $lines[0];
     }
 }
