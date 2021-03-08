@@ -11,22 +11,10 @@ use Symfony\Component\Console\Application as SymfonyApplication;
  */
 class Application extends SymfonyApplication
 {
-    protected static $name = 'Winter CLI';
+    protected static $name = "\033[1;34mWinter\033[0m CLI";
 
     protected static $version = '@version@ (@datetime@)';
 
-    protected static $logo = <<<LOGO
-====================================================================
-
- .d8888b.   .o8888b.   db  .d8888b.  d8888b. d88888b d8888b.  .d888b.
-.8P    Y8. d8P    Y8   88 .8P    Y8. 88  `8D 88'     88  `8D .8P , Y8.
-88      88 8P      oooo88 88      88 88oooY' 88oooo  88oobY' 88  |  88
-88      88 8b      ~~~~88 88      88 88~~~b. 88~~~~  88`8b   88  |/ 88
-`8b    d8' Y8b    d8   88 `8b    d8' 88   8D 88.     88 `88. `8b | d8'
- `Y8888P'   `Y8888P'   YP  `Y8888P'  Y8888P' Y88888P 88   YD  `Y888P'
-
-====================================================================\n\n
-LOGO;
     /**
      * Winter CLI constructor.
      *
@@ -41,16 +29,6 @@ LOGO;
         $this->setVersion(static::$version);
 
         $this->detectCommands();
-    }
-
-    /**
-     * Gets the help message.
-     *
-     * @return string A help message
-     */
-    public function getHelp()
-    {
-        return static::$logo . parent::getHelp();
     }
 
     /**
