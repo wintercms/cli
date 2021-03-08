@@ -16,7 +16,8 @@
         "knplabs/github-api": "^2.15"
     },
     "require-dev": {
-        "bamarni/composer-bin-plugin": "^1.4"
+        "bamarni/composer-bin-plugin": "^1.4",
+        "jetbrains/phpstorm-stubs": "dev-master"
     },
     "autoload": {
         "psr-4": {
@@ -25,10 +26,16 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "composer bin box require --dev --no-progress --no-suggest humbug/box"
+            "composer bin box config minimum-stability dev",
+            "composer bin box config prefer-stable true",
+            "composer bin box require --dev --no-progress humbug/box"
         ],
         "post-update-cmd": [
-            "composer bin box require --dev --no-progress --no-suggest humbug/box"
+            "composer bin box config minimum-stability dev",
+            "composer bin box config prefer-stable true",
+            "composer bin box require --dev --no-progress humbug/box"
         ]
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
