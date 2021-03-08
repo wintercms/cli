@@ -1,6 +1,6 @@
 {
-    "name": "bennothommo/october-cli",
-    "description": "A command-line helper tool for managing October CMS installations.",
+    "name": "winter/cli",
+    "description": "A command-line helper tool for managing Winter CMS installations.",
     "type": "project",
     "license": "MIT",
     "authors": [
@@ -20,7 +20,7 @@
     },
     "autoload": {
         "psr-4": {
-            "BennoThommo\\OctoberCli\\": "src/"
+            "Winter\\Cli\\": "src/"
         }
     },
     "scripts": {

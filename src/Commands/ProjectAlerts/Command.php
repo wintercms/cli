@@ -1,9 +1,9 @@
-<?php namespace BennoThommo\OctoberCli\Commands\ProjectAlerts;
+<?php namespace Winter\Cli\Commands\ProjectAlerts;
 
-use BennoThommo\OctoberCli\BaseCommand;
-use BennoThommo\OctoberCli\Commands\ProjectVersion\FileManifest;
-use BennoThommo\OctoberCli\Commands\ProjectVersion\SourceManifest;
-use BennoThommo\OctoberCli\GitHub\Token;
+use Winter\Cli\BaseCommand;
+use Winter\Cli\Commands\ProjectVersion\FileManifest;
+use Winter\Cli\Commands\ProjectVersion\SourceManifest;
+use Winter\Cli\GitHub\Token;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -28,20 +28,20 @@ class Command extends BaseCommand
     {
         $this
             // the short description shown while running "php bin/console list"
-            ->setDescription('View security alerts for an October CMS project.')
+            ->setDescription('View security alerts for an Winter CMS project.')
 
             // the full command description shown when running the command with
             // the "--help" option
             ->setHelp(
-                'Determines if a particular October CMS project has any published security advisories from the October'
-                . ' CMS security advisory database at https://github.com/octobercms/october/security/advisories/.'
+                'Determines if a particular Winter CMS project has any published security advisories from the Winter'
+                . ' CMS security advisory database at https://github.com/wintercms/winter/security/advisories/.'
             )
 
             // arguments
             ->addArgument(
                 'path',
                 InputArgument::OPTIONAL,
-                'The path to the October CMS project.'
+                'The path to the Winter CMS project.'
             )
         ;
     }
@@ -65,19 +65,19 @@ class Command extends BaseCommand
             $version = '1.0.' . $version;
         }
 
-        // Query security advisories for all October packages
+        // Query security advisories for all Winter packages
         $advisories = $this->getAdvisories($version);
 
         if (!count($advisories)) {
             $this->success(
-                'Your version of October CMS (' . $version . ') has no known security advisories.',
+                'Your version of Winter CMS (' . $version . ') has no known security advisories.',
                 OutputInterface::VERBOSITY_QUIET
             );
             return 0;
         }
 
         $this->error(
-            'Your version of October CMS has ' .
+            'Your version of Winter CMS has ' .
             (
                 (count($advisories) === 1)
                     ? '1 known security advisory'
@@ -114,7 +114,7 @@ class Command extends BaseCommand
 
         $this->line('', OutputInterface::VERBOSITY_QUIET);
         $this->error(
-            'You should upgrade to at least October CMS ' . $minReqVersion . ' as soon as possible.',
+            'You should upgrade to at least Winter CMS ' . $minReqVersion . ' as soon as possible.',
             OutputInterface::VERBOSITY_QUIET
         );
 
@@ -137,7 +137,7 @@ class Command extends BaseCommand
 
         foreach (['rain', 'backend', 'cms', 'system'] as $package) {
             $sourceAdvisories = $github->api('graphql')->execute('{
-                securityVulnerabilities(ecosystem: COMPOSER, package: "october/' . $package . '", first: 100) {
+                securityVulnerabilities(ecosystem: COMPOSER, package: "winter/' . $package . '", first: 100) {
                     edges {
                         node {
                             advisory {

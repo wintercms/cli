@@ -1,8 +1,8 @@
 {
     "main": "index.php",
-    "output": "october.phar",
+    "output": "winter.phar",
     "banner": [
-        "October CMS CLI helper.",
+        "Winter CMS CLI helper.",
         "",
         "(c) 2020 Ben Thomson",
         "",

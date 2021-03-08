@@ -3,5 +3,5 @@ vendor/*
 vendor-bin/*
 
 # Project
-october.phar
+winter.phar
 private/*

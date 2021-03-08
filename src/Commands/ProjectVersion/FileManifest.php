@@ -1,16 +1,16 @@
-<?php namespace BennoThommo\OctoberCli\Commands\ProjectVersion;
+<?php namespace Winter\Cli\Commands\ProjectVersion;
 
 use DirectoryIterator;
 use Exception;
 
 /**
- * Stores the file manifest for this October CMS installation.
+ * Stores the file manifest for this Winter CMS installation.
  *
- * This manifest is a file checksum of all files within this October CMS installation. When compared to the source
+ * This manifest is a file checksum of all files within this Winter CMS installation. When compared to the source
  * manifest, this allows us to determine the current installation's build number.
  *
  * Based off the following implementation, but decoupled for this CLI helpers' use.
- * https://github.com/octobercms/october/blob/develop/modules/system/classes/FileManifest.php
+ * https://github.com/wintercms/winter/blob/develop/modules/system/classes/FileManifest.php
  *
  * @since 0.1.0
  * @author Ben Thomson
@@ -78,7 +78,7 @@ class FileManifest
     }
 
     /**
-     * Validates that the root folder provided contains an October CMS installation.
+     * Validates that the root folder provided contains an Winter CMS installation.
      *
      * This looks for the following:
      *  - a `modules` directory with, at the very least, a `system` subdirectory
@@ -86,9 +86,9 @@ class FileManifest
      *  - a `config/app.php` file
      *  - a `config/cms.php` file
      *
-     * If all four of the above paths are present, it's reasonable to assume we're working with an October CMS install.
+     * If all four of the above paths are present, it's reasonable to assume we're working with an Winter CMS install.
      *
-     * @throws Exception If the specified root does not contain an October CMS installation.
+     * @throws Exception If the specified root does not contain an Winter CMS installation.
      * @return void
      */
     protected function validateRoot(): void
@@ -105,7 +105,7 @@ class FileManifest
 
             if (!$realPath) {
                 throw new Exception(
-                    'The given path does not appear to be an October CMS installation (missing ' . $path . ')'
+                    'The given path does not appear to be an Winter CMS installation (missing ' . $path . ')'
                 );
             }
         }

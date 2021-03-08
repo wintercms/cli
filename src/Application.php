@@ -1,4 +1,4 @@
-<?php namespace BennoThommo\OctoberCli;
+<?php namespace Winter\Cli;
 
 use DirectoryIterator;
 use Symfony\Component\Console\Application as SymfonyApplication;
@@ -11,7 +11,7 @@ use Symfony\Component\Console\Application as SymfonyApplication;
  */
 class Application extends SymfonyApplication
 {
-    protected static $name = 'October CLI';
+    protected static $name = 'Winter CLI';
 
     protected static $version = '@version@ (@datetime@)';
 
@@ -28,7 +28,7 @@ class Application extends SymfonyApplication
 ====================================================================\n\n
 LOGO;
     /**
-     * October CLI constructor.
+     * Winter CLI constructor.
      *
      * @param string $name
      * @param string $version
@@ -75,7 +75,7 @@ LOGO;
             }
 
             if (file_exists($dir->getPathname() . DIRECTORY_SEPARATOR . 'Command.php')) {
-                $class = 'BennoThommo\\OctoberCli\\Commands\\' . $dir->getFilename() . '\\Command';
+                $class = 'Winter\\Cli\\Commands\\' . $dir->getFilename() . '\\Command';
                 $this->add(new $class);
             }
         }

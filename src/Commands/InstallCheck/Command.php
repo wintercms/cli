@@ -1,7 +1,7 @@
-<?php namespace BennoThommo\OctoberCli\Commands\InstallCheck;
+<?php namespace Winter\Cli\Commands\InstallCheck;
 
-use BennoThommo\OctoberCli\BaseCommand;
-use BennoThommo\OctoberCli\Traits\CheckboxList;
+use Winter\Cli\BaseCommand;
+use Winter\Cli\Traits\CheckboxList;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -27,11 +27,11 @@ class Command extends BaseCommand
     {
         $this
             // the short description shown while running "php bin/console list"
-            ->setDescription('Checks the current environment that it can run October CMS.')
+            ->setDescription('Checks the current environment that it can run Winter CMS.')
 
             // the full command description shown when running the command with
             // the "--help" option
-            ->setHelp('This command allows you to check that your current environment can run October CMS.')
+            ->setHelp('This command allows you to check that your current environment can run Winter CMS.')
         ;
     }
 
@@ -55,19 +55,19 @@ class Command extends BaseCommand
 
         if ($this->failed) {
             $this->error(
-                'Your current environment does not support October CMS. Please review the checklist above and follow'
+                'Your current environment does not support Winter CMS. Please review the checklist above and follow'
                 . ' the suggestions in order to allow compatibility.',
                 OutputInterface::VERBOSITY_QUIET
             );
         } elseif ($this->warned) {
             $this->warn(
-                'October CMS is compatible with your environment, but certain features may not work or may work'
+                'Winter CMS is compatible with your environment, but certain features may not work or may work'
                 . ' incorrectly. Please review the checklist above and follow the suggestions in order to improve'
                 . ' compatibility.',
                 OutputInterface::VERBOSITY_QUIET
             );
         } else {
-            $this->success('October CMS is fully compatible with your environment.', OutputInterface::VERBOSITY_QUIET);
+            $this->success('Winter CMS is fully compatible with your environment.', OutputInterface::VERBOSITY_QUIET);
         }
     }
 
@@ -77,12 +77,12 @@ class Command extends BaseCommand
 
         if (version_compare(PHP_VERSION, '7.2.9', '<')) {
             $this->checkFailed(
-                'Your PHP version (' . PHP_VERSION . ') is outdated and not supported by October CMS.',
+                'Your PHP version (' . PHP_VERSION . ') is outdated and not supported by Winter CMS.',
                 'Please upgrade your PHP version to at least 7.2.9.'
             );
         } elseif (version_compare(PHP_VERSION, '8.0.0', '>=')) {
             $this->checkWarned(
-                'Your PHP version (' . PHP_VERSION . ') is untested with October CMS.',
+                'Your PHP version (' . PHP_VERSION . ') is untested with Winter CMS.',
                 'You may experience errors and potential data loss.'
             );
         } else {
