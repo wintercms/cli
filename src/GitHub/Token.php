@@ -1,6 +1,8 @@
 <?php namespace Winter\Cli\GitHub;
 
 use Exception;
+use Vtiful\Kernel\Excel;
+use Winter\Cli\Filesystem\DataDir;
 
 /**
  * Simple token holder.
@@ -16,52 +18,23 @@ class Token
     /** @var string stored token */
     protected $token = null;
 
-    /** @var array suitable locations to find and store the token */
-    protected $suitableLocations = [];
+    /** @var string GitHub token filename */
+    protected $tokenFile = 'github_token';
 
     /**
-     * Constructor.
-     */
-    public function __construct()
-    {
-        $this->suitableLocations = [
-            $_SERVER['HOME'] . DIRECTORY_SEPARATOR . '.config',
-            $_SERVER['HOME'] . DIRECTORY_SEPARATOR . '.local' . DIRECTORY_SEPARATOR . 'share',
-            $_SERVER['HOME'] . DIRECTORY_SEPARATOR . 'AppData' . DIRECTORY_SEPARATOR . 'Local',
-            $_SERVER['HOME'] . DIRECTORY_SEPARATOR . '.winter-cli',
-        ];
-    }
-
-    /**
-     * Writes the token to an available suitable location.
+     * Writes the token to a suitable available location.
      *
      * @param string $token
      * @return string Path to the token file.
-     * @throws Exception If a suitable location cannot be found.
+     * @throws Exception If the token file cannot be written
      */
     public function write(string $token): string
     {
-        $written = null;
-
-        foreach ($this->suitableLocations as $dir) {
-            if (is_dir($dir)) {
-                if (!is_writable($dir)) {
-                    continue;
-                }
-                if (!is_dir($dir . DIRECTORY_SEPARATOR . 'winter-cli')) {
-                    mkdir($dir . DIRECTORY_SEPARATOR . 'winter-cli');
-                }
-
-                $path = $dir . DIRECTORY_SEPARATOR . 'winter-cli' . DIRECTORY_SEPARATOR . 'token';
-
-                file_put_contents($path, $token);
-                $written = $path;
-                break;
-            }
-        }
-
-        if (!$written) {
-            throw new Exception('Unable to write the GitHub Access Token in your home directory.');
+        try {
+            $dataDir = new DataDir();
+            $written = $dataDir->put($this->tokenFile, $token);
+        } catch (Exception $e) {
+            throw new Exception('Unable to store the GitHub Access Token.');
         }
 
         return $written;
@@ -79,16 +52,10 @@ class Token
             return $this->token;
         }
 
-        foreach ($this->suitableLocations as $dir) {
-            $path = $dir . DIRECTORY_SEPARATOR . 'winter-cli' . DIRECTORY_SEPARATOR . 'token';
+        $dataDir = new DataDir();
+        $token = $dataDir->get($this->tokenFile);
 
-            if (file_exists($path)) {
-                $this->token = file_get_contents($path);
-                break;
-            }
-        }
-
-        if ($this->token === null) {
+        if (!$token) {
             throw new Exception(
                 'You must provide a GitHub Access Token for Winter CLI Helper to use this feature.'
                 . ' Please visit' . "\n"
