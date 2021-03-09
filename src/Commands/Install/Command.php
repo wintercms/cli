@@ -1,11 +1,11 @@
-<?php namespace BennoThommo\OctoberCli\Commands\Install;
+<?php namespace Winter\Cli\Commands\Install;
 
 use DirectoryIterator;
 use Exception;
 use RuntimeException;
-use BennoThommo\OctoberCli\BaseCommand;
-use BennoThommo\OctoberCli\GitHub\Token;
-use BennoThommo\OctoberCli\Traits\CheckboxList;
+use Winter\Cli\BaseCommand;
+use Winter\Cli\GitHub\Token;
+use Winter\Cli\Traits\CheckboxList;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -37,7 +37,7 @@ class Command extends BaseCommand
     protected $composerPath = null;
 
     /** @var string Application name */
-    protected $appName = 'October CMS';
+    protected $appName = 'Winter CMS';
 
     /** @var string Application URL */
     protected $appUrl = 'https://localhost/';
@@ -58,7 +58,7 @@ class Command extends BaseCommand
     protected $dbPass = null;
 
     /** @var string Database name (or storage location) */
-    protected $dbName = 'october';
+    protected $dbName = 'winter';
 
     /** @var string Administrator account username */
     protected $adminUsername = 'admin';
@@ -76,17 +76,17 @@ class Command extends BaseCommand
     {
         $this
             // the short description shown while running "php bin/console list"
-            ->setDescription('Installs October CMS.')
+            ->setDescription('Installs Winter CMS.')
 
             // the full command description shown when running the command with
             // the "--help" option
             ->setHelp(
-                'This command allows you to install October CMS into a specified path.' . PHP_EOL . PHP_EOL .
+                'This command allows you to install Winter CMS into a specified path.' . PHP_EOL . PHP_EOL .
                 'Three types of installation are available:' . PHP_EOL .
-                ' - Easy install: Installs October CMS using the October CMS marketplace.' . PHP_EOL .
-                ' - Composer install: Installs October CMS using Composer.' . PHP_EOL .
-                ' - Contributor install: Installs October CMS using Composer, and sets up the installation in order' .
-                ' to allow the user to contribute to October CMS, including setting up a fork in GitHub and' .
+                ' - Easy install: Installs Winter CMS using the Winter CMS marketplace.' . PHP_EOL .
+                ' - Composer install: Installs Winter CMS using Composer.' . PHP_EOL .
+                ' - Contributor install: Installs Winter CMS using Composer, and sets up the installation in order' .
+                ' to allow the user to contribute to Winter CMS, including setting up a fork in GitHub and' .
                 ' configuring a local Git repository.'
             )
 
@@ -94,7 +94,7 @@ class Command extends BaseCommand
             ->addArgument(
                 'path',
                 InputArgument::OPTIONAL,
-                'The path to the October CMS project.'
+                'The path to the Winter CMS project.'
             )
 
             // options
@@ -102,39 +102,39 @@ class Command extends BaseCommand
                 'composer',
                 'c',
                 InputOption::VALUE_NONE,
-                'Installs October CMS using Composer.'
+                'Installs Winter CMS using Composer.'
             )
             ->addOption(
                 'contributor',
                 null,
                 InputOption::VALUE_NONE,
-                'Installs October CMS using Composer, and sets up the installation in order' .
-                ' to allow the user to contribute to October CMS.'
+                'Installs Winter CMS using Composer, and sets up the installation in order' .
+                ' to allow the user to contribute to Winter CMS.'
             )
             ->addOption(
                 'easy',
                 'e',
                 InputOption::VALUE_NONE,
-                'Installs October CMS using the October CMS marketplace.'
+                'Installs Winter CMS using the Winter CMS marketplace.'
             )
             ->addOption(
                 'force',
                 'f',
                 InputOption::VALUE_NONE,
-                'Forces the installation of October CMS (will delete any files within the path specified).'
+                'Forces the installation of Winter CMS (will delete any files within the path specified).'
             )
             // settings options
             ->addOption(
                 'app-name',
                 null,
                 InputOption::VALUE_REQUIRED,
-                'Specifies the name of the October CMS project.'
+                'Specifies the name of the Winter CMS project.'
             )
             ->addOption(
                 'app-url',
                 null,
                 InputOption::VALUE_REQUIRED,
-                'Specifies the URL of the October CMS project.'
+                'Specifies the URL of the Winter CMS project.'
             )
             ->addOption(
                 'db-type',
@@ -211,11 +211,11 @@ class Command extends BaseCommand
             $question = new ChoiceQuestion(
                 PHP_EOL .
                 '<comment>Please select the installation type.</comment>' . PHP_EOL . PHP_EOL .
-                ' - <bold>Easy install (easy):</bold> (default) Installs October CMS using the October CMS' .
+                ' - <bold>Easy install (easy):</bold> (default) Installs Winter CMS using the Winter CMS' .
                 ' marketplace.' . PHP_EOL .
-                ' - <bold>Composer install (composer):</bold> Installs October CMS using Composer.' . PHP_EOL .
-                ' - <bold>Contributor install (contributor):</bold> Installs October CMS using Composer, and sets up' .
-                ' the installation in order to allow the user to contribute to October CMS, including setting up a' .
+                ' - <bold>Composer install (composer):</bold> Installs Winter CMS using Composer.' . PHP_EOL .
+                ' - <bold>Contributor install (contributor):</bold> Installs Winter CMS using Composer, and sets up' .
+                ' the installation in order to allow the user to contribute to Winter CMS, including setting up a' .
                 ' fork in GitHub and configuring a local Git repository.' . PHP_EOL,
                 ['easy', 'composer', 'contributor'],
                 'easy'
@@ -323,7 +323,7 @@ class Command extends BaseCommand
                 if ($item->isFile() || $item->isLink() || $item->isDir()) {
                     $message = 'Path "' . $path . '" is not empty.';
                     if ($path === getcwd()) {
-                        $message .= ' Please clear out the current directory to install October CMS here.';
+                        $message .= ' Please clear out the current directory to install Winter CMS here.';
                     } else {
                         $message .= 'Use the --force option to ignore this.';
                     }
@@ -333,7 +333,7 @@ class Command extends BaseCommand
         }
 
         if (is_file($path)) {
-            throw new Exception('Path "' . $path . '" is a file. You must install October CMS in a directory.');
+            throw new Exception('Path "' . $path . '" is a file. You must install Winter CMS in a directory.');
         }
     }
 
@@ -352,7 +352,7 @@ class Command extends BaseCommand
             return;
         }
         if (is_file($path)) {
-            throw new Exception('Path "' . $path . '" is a file. You must install October CMS in a directory.');
+            throw new Exception('Path "' . $path . '" is a file. You must install Winter CMS in a directory.');
         }
 
         // Remove the path completely
@@ -516,10 +516,10 @@ class Command extends BaseCommand
         // Add a slight pause to indicate installation
         usleep(650000);
 
-        $this->info('Installing October CMS...');
+        $this->info('Installing Winter CMS...');
 
         // Set up fork
-        $this->doCheck('Fork October CMS repository');
+        $this->doCheck('Fork Winter CMS repository');
 
         // Check for the presence of a fork, and create a fork if not available
         $ownedRepos = $this->github->currentUser()->repositories();
@@ -527,7 +527,7 @@ class Command extends BaseCommand
         $repository = null;
 
         foreach ($ownedRepos as $repo) {
-            if ($repo['name'] === 'october') {
+            if ($repo['name'] === 'winter') {
                 $found = true;
                 $repository = $repo;
                 break;
@@ -536,8 +536,8 @@ class Command extends BaseCommand
 
         if (!$found) {
             try {
-                $repository = $this->github->api('repo')->forks()->create('octobercms', 'october');
-                $this->checkSuccessful('October CMS repository forked to ' . $repository['html_url'] . '.');
+                $repository = $this->github->api('repo')->forks()->create('wintercms', 'winter');
+                $this->checkSuccessful('Winter CMS repository forked to ' . $repository['html_url'] . '.');
             } catch (Throwable $e) {
                 $this->checkFailed('Unable to fork repository.', $e->getMessage());
             }
