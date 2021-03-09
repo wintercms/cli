@@ -9,7 +9,7 @@ if (version_compare(PHP_VERSION, '7.2.0', '<')) {
 // Load dependencies
 require __DIR__.'/vendor/autoload.php';
 
-use BennoThommo\OctoberCli\Application;
+use Winter\Cli\Application;
 
 $app = new Application();
 $app->run();

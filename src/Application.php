@@ -1,4 +1,4 @@
-<?php namespace BennoThommo\OctoberCli;
+<?php namespace Winter\Cli;
 
 use DirectoryIterator;
 use Symfony\Component\Console\Application as SymfonyApplication;
@@ -11,24 +11,26 @@ use Symfony\Component\Console\Application as SymfonyApplication;
  */
 class Application extends SymfonyApplication
 {
-    protected static $name = 'October CLI';
+    protected static $name = "Winter \033[1;34mCLI\033[0m";
 
     protected static $version = '@version@ (@datetime@)';
 
     protected static $logo = <<<LOGO
-====================================================================
 
- .d8888b.   .o8888b.   db  .d8888b.  d8888b. d88888b d8888b.  .d888b.
-.8P    Y8. d8P    Y8   88 .8P    Y8. 88  `8D 88'     88  `8D .8P , Y8.
-88      88 8P      oooo88 88      88 88oooY' 88oooo  88oobY' 88  |  88
-88      88 8b      ~~~~88 88      88 88~~~b. 88~~~~  88`8b   88  |/ 88
-`8b    d8' Y8b    d8   88 `8b    d8' 88   8D 88.     88 `88. `8b | d8'
- `Y8888P'   `Y8888P'   YP  `Y8888P'  Y8888P' Y88888P 88   YD  `Y888P'
 
-====================================================================\n\n
+db   d8b   db d888888b d8b   db d888888b d88888b d8888b.       \033[1;34m...\033[0m
+88   I8I   88   `88'   888o  88 `~~88~~' 88'     88  `8D  \033[1;34m... ..... ...\033[0m
+88   I8I   88    88    88V8o 88    88    88ooooo 88oobY'    \033[1;34m.. ... ..\033[0m
+Y8   I8I   88    88    88 V8o88    88    88~~~~~ 88`8b      \033[1;34m.. ... ..\033[0m
+`8b d8'8b d8'   .88.   88  V888    88    88.     88 `88.  \033[1;34m... ..... ...\033[0m
+ `8b8' `8d8'  Y888888P VP   V8P    YP    Y88888P 88   YD       \033[1;34m...\033[0m
+
+
+
 LOGO;
+
     /**
-     * October CLI constructor.
+     * Winter CLI constructor.
      *
      * @param string $name
      * @param string $version
@@ -75,7 +77,7 @@ LOGO;
             }
 
             if (file_exists($dir->getPathname() . DIRECTORY_SEPARATOR . 'Command.php')) {
-                $class = 'BennoThommo\\OctoberCli\\Commands\\' . $dir->getFilename() . '\\Command';
+                $class = 'Winter\\Cli\\Commands\\' . $dir->getFilename() . '\\Command';
                 $this->add(new $class);
             }
         }

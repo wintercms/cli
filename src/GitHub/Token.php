@@ -1,4 +1,4 @@
-<?php namespace BennoThommo\OctoberCli\GitHub;
+<?php namespace Winter\Cli\GitHub;
 
 use Exception;
 
@@ -28,7 +28,7 @@ class Token
             $_SERVER['HOME'] . DIRECTORY_SEPARATOR . '.config',
             $_SERVER['HOME'] . DIRECTORY_SEPARATOR . '.local' . DIRECTORY_SEPARATOR . 'share',
             $_SERVER['HOME'] . DIRECTORY_SEPARATOR . 'AppData' . DIRECTORY_SEPARATOR . 'Local',
-            $_SERVER['HOME'] . DIRECTORY_SEPARATOR . '.october-cli',
+            $_SERVER['HOME'] . DIRECTORY_SEPARATOR . '.winter-cli',
         ];
     }
 
@@ -48,11 +48,11 @@ class Token
                 if (!is_writable($dir)) {
                     continue;
                 }
-                if (!is_dir($dir . DIRECTORY_SEPARATOR . 'october-cli')) {
-                    mkdir($dir . DIRECTORY_SEPARATOR . 'october-cli');
+                if (!is_dir($dir . DIRECTORY_SEPARATOR . 'winter-cli')) {
+                    mkdir($dir . DIRECTORY_SEPARATOR . 'winter-cli');
                 }
 
-                $path = $dir . DIRECTORY_SEPARATOR . 'october-cli' . DIRECTORY_SEPARATOR . 'token';
+                $path = $dir . DIRECTORY_SEPARATOR . 'winter-cli' . DIRECTORY_SEPARATOR . 'token';
 
                 file_put_contents($path, $token);
                 $written = $path;
@@ -80,7 +80,7 @@ class Token
         }
 
         foreach ($this->suitableLocations as $dir) {
-            $path = $dir . DIRECTORY_SEPARATOR . 'october-cli' . DIRECTORY_SEPARATOR . 'token';
+            $path = $dir . DIRECTORY_SEPARATOR . 'winter-cli' . DIRECTORY_SEPARATOR . 'token';
 
             if (file_exists($path)) {
                 $this->token = file_get_contents($path);
@@ -90,9 +90,9 @@ class Token
 
         if ($this->token === null) {
             throw new Exception(
-                'You must provide a GitHub Access Token for October CLI Helper to use this feature.'
+                'You must provide a GitHub Access Token for Winter CLI Helper to use this feature.'
                 . ' Please visit' . "\n"
-                . 'https://github.com/settings/tokens/new?scopes=public_repo&description=October%20CLI%20Helper'
+                . 'https://github.com/settings/tokens/new?scopes=public_repo&description=Winter%20CMS%20CLI%20Helper'
                 . ' to create a token, then use the "github:token" command to store the token for further use.'
             );
         }

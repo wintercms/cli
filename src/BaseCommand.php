@@ -1,4 +1,4 @@
-<?php namespace BennoThommo\OctoberCli;
+<?php namespace Winter\Cli;
 
 use RuntimeException;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;

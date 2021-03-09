@@ -1,7 +1,7 @@
-<?php namespace BennoThommo\OctoberCli\Commands\GithubToken;
+<?php namespace Winter\Cli\Commands\GithubToken;
 
-use BennoThommo\OctoberCli\BaseCommand;
-use BennoThommo\OctoberCli\GitHub\Token;
+use Winter\Cli\BaseCommand;
+use Winter\Cli\GitHub\Token;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -34,7 +34,7 @@ class Command extends BaseCommand
                 'Allows you to store a GitHub Access Token locally. This is used for some functions of the CLI helper'
                 . ' which may be subject to GitHub API\'s rate limits.' . "\n\n"
                 . 'If you wish to create the token necessary, please visit the following URL:' . "\n"
-                . 'https://github.com/settings/tokens/new?scopes=public_repo&description=October%20CLI%20Helper'
+                . 'https://github.com/settings/tokens/new?scopes=public_repo&description=Winter%20CLI%20Helper'
             )
 
             // arguments

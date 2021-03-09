@@ -1,4 +1,4 @@
-<?php namespace BennoThommo\OctoberCli\Traits;
+<?php namespace Winter\Cli\Traits;
 
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\ConsoleSectionOutput;

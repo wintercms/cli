@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<ruleset name="October CLI">
-    <description>The coding standard for October CLI.</description>
+<ruleset name="Winter CLI">
+    <description>The coding standard for Winter CLI.</description>
     <rule ref="PSR2" />
 
     <rule ref="PSR1.Classes.ClassDeclaration.MultipleClasses">
