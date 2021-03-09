@@ -25,7 +25,7 @@ class Command extends BaseCommand
     use CheckboxList;
 
     /** @inheritDoc */
-    protected static $defaultName = 'install';
+    protected static $defaultName = 'install:run';
 
     /** @var GitHub\Client GitHub Client instance */
     protected $github = null;
@@ -75,6 +75,8 @@ class Command extends BaseCommand
     protected function configure()
     {
         $this
+            // aliases
+            ->setAliases(['install'])
             // the short description shown while running "php bin/console list"
             ->setDescription('Installs Winter CMS.')
 
@@ -233,15 +235,20 @@ class Command extends BaseCommand
 
         // Check that `git` is installed
         if ($mode === 'contributor') {
-            $this->gitPath = $this->getGitPath();
-
-            echo $this->gitPath;
-            die();
+            try {
+                $this->getGitPath();
+            } catch (Exception $e) {
+                throw new Exception('"git" command is required to install the contributor version of Winter CMS.');
+            }
         }
 
         // Check that `composer` is installed
         if ($mode === 'contributor' || $mode === 'composer') {
-            $this->composerPath = $this->getComposerPath();
+            try {
+                $this->getComposerPath();
+            } catch (Exception $e) {
+                throw new Exception('"composer" command is required to install the contributor version of Winter CMS.');
+            }
         }
 
         // Check (or clear) the current path
@@ -283,18 +290,6 @@ class Command extends BaseCommand
                 $this->doContributorInstall($input, $output, $path);
                 break;
         }
-
-        print_r([
-            'appName' => $this->appName,
-            'appUrl' => $this->appUrl,
-            'dbType' => $this->dbType,
-            'dbHost' => $this->dbHost,
-            'dbPort' => $this->dbPort,
-            'dbName' => $this->dbName,
-            'dbUser' => $this->dbUser,
-            'dbPass' => $this->dbPass,
-        ]);
-        die();
     }
 
     /**
@@ -596,6 +591,10 @@ class Command extends BaseCommand
 
     protected function getGitPath()
     {
+        if (!empty($this->gitPath)) {
+            return $this->gitPath;
+        }
+
         if (PHP_OS_FAMILY == 'Windows') {
             $command = 'where.exe git.exe';
         } else {
@@ -616,6 +615,49 @@ class Command extends BaseCommand
             $lines = [$return];
         }
 
-        return $lines[0];
+        return $this->gitPath = $lines[0];
+    }
+
+    protected function getComposerPath()
+    {
+        if (!empty($this->composerPath)) {
+            return $this->composerPath;
+        }
+
+        if (PHP_OS_FAMILY == 'Windows') {
+            $command = 'where.exe composer.exe';
+        } else {
+            $command = 'which composer 2>&1';
+        }
+
+        $return = $this->runCommand(null, null, $command, true);
+
+        if (empty($return)) {
+            // Try to find a local install of Composer
+            if (
+                file_exists(getcwd() . DIRECTORY_SEPARATOR . 'composer.phar')
+                && is_executable(getcwd() . DIRECTORY_SEPARATOR . 'composer.phar')
+            ) {
+                return $this->composerPath = getcwd() . DIRECTORY_SEPARATOR . 'composer.phar';
+            }
+            if (
+                file_exists(getcwd() . DIRECTORY_SEPARATOR . 'composer')
+                && is_executable(getcwd() . DIRECTORY_SEPARATOR . 'composer')
+            ) {
+                return $this->composerPath = getcwd() . DIRECTORY_SEPARATOR . 'composer';
+            }
+
+            throw new Exception('Unable to find Composer binary. Please ensure the `composer` command is installed.');
+        }
+
+        if (strpos($return, PHP_EOL) !== false) {
+            $lines = array_filter(explode(PHP_EOL, $return), function ($item) {
+                return !empty($item);
+            });
+        } else {
+            $lines = [$return];
+        }
+
+        return $this->gitPath = $lines[0];
     }
 }

@@ -7,7 +7,7 @@ if (version_compare(PHP_VERSION, '7.2.0', '<')) {
 }
 
 // Load dependencies
-require __DIR__.'/vendor/autoload.php';
+require __DIR__ . '/vendor/autoload.php';
 
 use Winter\Cli\Application;
 
