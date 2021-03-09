@@ -64,6 +64,6 @@ class Token
             );
         }
 
-        return $this->token;
+        return $this->token = $token;
     }
 }
