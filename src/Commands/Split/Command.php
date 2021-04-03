@@ -707,6 +707,19 @@ class Command extends BaseCommand
             } else {
                 $this->line(' - Fetched repository for "' . $remote . '" module.');
             }
+
+            $process = $this->runGitCommand([
+                'remote',
+                'prune',
+                $remote
+            ]);
+            if (!$process->isSuccessful()) {
+                $this->error(
+                    ' - Unable to prune branches from "' . $remote . '" module. ' . $process->getErrorOutput()
+                );
+            } else {
+                $this->line(' - Pruned branches for "' . $remote . '" module.');
+            }
         }
     }
 
