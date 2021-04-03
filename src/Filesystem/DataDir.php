@@ -57,6 +57,23 @@ class DataDir
     }
 
     /**
+     * Gets a path to a file or directory in the data directory.
+     *
+     * If the file does not exist, returns `false`.
+     *
+     * @param string $path
+     * @return string|bool
+     */
+    public function path(string $path)
+    {
+        if (!$this->exists($path)) {
+            return false;
+        }
+
+        return $this->resolvePath($path);
+    }
+
+    /**
      * Finds if a file exists within the data directory.
      *
      * @param string $path
@@ -117,6 +134,7 @@ class DataDir
      * @param string $path
      * @param string $content
      * @return string
+     * @throws Exception If the directory cannot be written.
      */
     public function mkdir(string $path)
     {
@@ -147,6 +165,31 @@ class DataDir
         }
 
         return $path;
+    }
+
+    /**
+     * Changes file permissions on a path in the data directory
+     *
+     * If the file does not exist, returns `false`.
+     *
+     * @param string $path
+     * @param octal $chmod
+     * @return bool
+     * @throws Exception If the permissions cannot be written.
+     */
+    public function chmod(string $path, $chmod)
+    {
+        if (!$this->exists($path)) {
+            return false;
+        }
+
+        $path = $this->resolvePath($path);
+
+        try {
+            chmod($path, $chmod);
+        } catch (Throwable $e) {
+            throw new Exception('Unable to chmod "' . $path . '", please check permissions.');
+        }
     }
 
     /**
