@@ -192,6 +192,9 @@ class Command extends BaseCommand
                 $this->doRemoveTag();
                 break;
         }
+
+        $this->comment('Complete');
+        $this->line('');
     }
 
     /**
