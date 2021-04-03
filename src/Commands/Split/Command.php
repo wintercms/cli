@@ -45,7 +45,8 @@ class Command extends BaseCommand
     protected $repoName = 'split-repo';
 
     /**
-     * @var array Remote subsplit repositories. Each remote requires one string placeholder in the URL to insert a token.
+     * @var array Remote subsplit repositories. Each remote requires one string placeholder in the URL to insert
+     * a token.
      */
     protected $remotes = [
         'system' => [
@@ -687,7 +688,10 @@ class Command extends BaseCommand
                 sprintf($split['url'], $this->token)
             ]);
             if (!$process->isSuccessful()) {
-                $this->error(' - Unable to set remote repository for "' . $remote . '" module. ' . $process->getErrorOutput());
+                $this->error(
+                    ' - Unable to set remote repository for "' . $remote . '" module. '
+                    . $process->getErrorOutput()
+                );
             } else {
                 $this->line(' - Set remote repository for "' . $remote . '" module.');
             }
@@ -697,7 +701,9 @@ class Command extends BaseCommand
                 $remote
             ]);
             if (!$process->isSuccessful()) {
-                $this->error(' - Unable to fetch repository for "' . $remote . '" module. ' . $process->getErrorOutput());
+                $this->error(
+                    ' - Unable to fetch repository for "' . $remote . '" module. ' . $process->getErrorOutput()
+                );
             } else {
                 $this->line(' - Fetched repository for "' . $remote . '" module.');
             }
