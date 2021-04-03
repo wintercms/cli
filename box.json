@@ -4,7 +4,7 @@
     "banner": [
         "Winter CMS CLI helper.",
         "",
-        "(c) 2020 Ben Thomson",
+        "(c) 2020 Ben Thomson / Winter CMS",
         "",
         "This source file is subject to the MIT license that is bundled",
         "with this source code in the file LICENSE."
@@ -17,5 +17,32 @@
         "version": "##version##",
         "datetime": "##datetime##"
     },
-    "algorithm": "SHA256"
+    "algorithm": "SHA256",
+    "files": [
+        "index.php"
+    ],
+    "directories": [
+        "src"
+    ],
+    "directories-bin": [
+        "bin"
+    ],
+    "finder": [
+        {
+            "notName": "/LICENSE|.*\\.md|.*\\.dist|Makefile|composer\\.json|composer\\.lock/",
+            "exclude": [
+                "doc",
+                "test",
+                "test_old",
+                "tests",
+                "Tests",
+                "vendor-bin"
+            ],
+            "in": "vendor"
+        },
+        {
+            "name": "composer.json",
+            "in": "."
+        }
+    ]
 }
