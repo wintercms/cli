@@ -236,7 +236,7 @@ class Command extends BaseCommand
             if (count($removedBranches)) {
                 foreach ($removedBranches as $removedBranch) {
                     $progress->clear();
-                    $this->line('   - Removing branch "' . $branch . '" from remote "' . $remote . '".');
+                    $this->line('   - Removing branch "' . $removedBranch . '" from remote "' . $remote . '".');
                     $progress->display();
 
                     $this->deleteBranch($remote, $removedBranch);
