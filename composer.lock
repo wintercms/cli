@@ -200,16 +200,16 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "1.7.0",
+            "version": "1.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "53330f47520498c0ae1f61f7e2c90f55690c06a3"
+                "reference": "35ea11d335fd638b5882ff1725228b3d35496ab1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/53330f47520498c0ae1f61f7e2c90f55690c06a3",
-                "reference": "53330f47520498c0ae1f61f7e2c90f55690c06a3",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/35ea11d335fd638b5882ff1725228b3d35496ab1",
+                "reference": "35ea11d335fd638b5882ff1725228b3d35496ab1",
                 "shasum": ""
             },
             "require": {
@@ -269,22 +269,22 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/psr7/issues",
-                "source": "https://github.com/guzzle/psr7/tree/1.7.0"
+                "source": "https://github.com/guzzle/psr7/tree/1.8.1"
             },
-            "time": "2020-09-30T07:37:11+00:00"
+            "time": "2021-03-21T16:25:00+00:00"
         },
         {
             "name": "knplabs/github-api",
-            "version": "v2.19.0",
+            "version": "v2.19.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/php-github-api.git",
-                "reference": "271b3ca6f7b315c3dae1fcf2be8bb2912a93587d"
+                "reference": "ad3b8e6084729adff5c804bc7058afc57ba04224"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/php-github-api/zipball/271b3ca6f7b315c3dae1fcf2be8bb2912a93587d",
-                "reference": "271b3ca6f7b315c3dae1fcf2be8bb2912a93587d",
+                "url": "https://api.github.com/repos/KnpLabs/php-github-api/zipball/ad3b8e6084729adff5c804bc7058afc57ba04224",
+                "reference": "ad3b8e6084729adff5c804bc7058afc57ba04224",
                 "shasum": ""
             },
             "require": {
@@ -309,7 +309,7 @@
             "extra": {
                 "branch-alias": {
                     "dev-2.x": "2.19.x-dev",
-                    "dev-master": "3.0.x-dev"
+                    "dev-master": "3.2.x-dev"
                 }
             },
             "autoload": {
@@ -342,7 +342,7 @@
             ],
             "support": {
                 "issues": "https://github.com/KnpLabs/php-github-api/issues",
-                "source": "https://github.com/KnpLabs/php-github-api/tree/v2.19.0"
+                "source": "https://github.com/KnpLabs/php-github-api/tree/v2.19.2"
             },
             "funding": [
                 {
@@ -350,7 +350,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-12-21T18:32:50+00:00"
+            "time": "2021-03-28T13:11:08+00:00"
         },
         {
             "name": "php-http/cache-plugin",
@@ -1172,16 +1172,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v4.4.20",
+            "version": "v4.4.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "c98349bda966c70d6c08b4cd8658377c94166492"
+                "reference": "1ba4560dbbb9fcf5ae28b61f71f49c678086cf23"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/c98349bda966c70d6c08b4cd8658377c94166492",
-                "reference": "c98349bda966c70d6c08b4cd8658377c94166492",
+                "url": "https://api.github.com/repos/symfony/console/zipball/1ba4560dbbb9fcf5ae28b61f71f49c678086cf23",
+                "reference": "1ba4560dbbb9fcf5ae28b61f71f49c678086cf23",
                 "shasum": ""
             },
             "require": {
@@ -1241,7 +1241,7 @@
             "description": "Eases the creation of beautiful and testable command line interfaces",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/console/tree/v4.4.20"
+                "source": "https://github.com/symfony/console/tree/v4.4.21"
             },
             "funding": [
                 {
@@ -1257,7 +1257,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-02-22T18:44:15+00:00"
+            "time": "2021-03-26T09:23:24+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -2021,12 +2021,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/JetBrains/phpstorm-stubs.git",
-                "reference": "39476b4f910c5678d50e911502e3e5a4ef10faeb"
+                "reference": "c2607811710b645ab782a72d63cf5ce700e79dcf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JetBrains/phpstorm-stubs/zipball/39476b4f910c5678d50e911502e3e5a4ef10faeb",
-                "reference": "39476b4f910c5678d50e911502e3e5a4ef10faeb",
+                "url": "https://api.github.com/repos/JetBrains/phpstorm-stubs/zipball/c2607811710b645ab782a72d63cf5ce700e79dcf",
+                "reference": "c2607811710b645ab782a72d63cf5ce700e79dcf",
                 "shasum": ""
             },
             "require-dev": {
@@ -2062,7 +2062,7 @@
             "support": {
                 "source": "https://github.com/JetBrains/phpstorm-stubs/tree/master"
             },
-            "time": "2021-03-06T16:59:21+00:00"
+            "time": "2021-04-01T18:53:50+00:00"
         }
     ],
     "aliases": [],
