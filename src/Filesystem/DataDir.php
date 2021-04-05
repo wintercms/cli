@@ -38,6 +38,59 @@ class DataDir
     }
 
     /**
+     * Gets a file into the data directory.
+     *
+     * If the file does not exist, returns `false`.
+     *
+     * @param string $path
+     * @return string|bool
+     */
+    public function get(string $path)
+    {
+        $path = $this->resolvePath($path);
+
+        if (!$path || !is_readable($path)) {
+            throw new Exception('Unable to get file "' . $path . '", please check permissions.');
+        }
+
+        return file_get_contents($path);
+    }
+
+    /**
+     * Gets a path to a file or directory in the data directory.
+     *
+     * If the file does not exist, returns `false`.
+     *
+     * @param string $path
+     * @return string|bool
+     */
+    public function path(string $path)
+    {
+        if (!$this->exists($path)) {
+            return false;
+        }
+
+        return $this->resolvePath($path);
+    }
+
+    /**
+     * Finds if a file exists within the data directory.
+     *
+     * @param string $path
+     * @return bool
+     */
+    public function exists(string $path)
+    {
+        $path = $this->resolvePath($path);
+
+        if (!$path || !is_readable($path)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Puts a file into the data directory.
      *
      * If successful, will return the path written to.
@@ -74,22 +127,69 @@ class DataDir
     }
 
     /**
-     * Gets a file into the data directory.
+     * Creates a directory within the data directory.
+     *
+     * If successful, will return the path written to.
+     *
+     * @param string $path
+     * @param string $content
+     * @return string
+     * @throws Exception If the directory cannot be written.
+     */
+    public function mkdir(string $path)
+    {
+        $path = $this->resolvePath($path);
+
+        if (is_dir($path)) {
+            return $path;
+        }
+
+        if (is_file($path)) {
+            throw new Exception('A file already exists as path "' . $path . '"');
+        }
+
+        try {
+            $dir = dirname($path);
+
+            if (is_dir($dir) && !is_writeable($dir)) {
+                throw new Exception('Path not writable');
+            }
+
+            if (!is_dir($dir) && !mkdir($dir, 0755, true)) {
+                throw new Exception('Directory not writable');
+            }
+
+            mkdir($path, 0755);
+        } catch (Throwable $e) {
+            throw new Exception('Unable to make directory "' . $path . '", please check permissions.');
+        }
+
+        return $path;
+    }
+
+    /**
+     * Changes file permissions on a path in the data directory
      *
      * If the file does not exist, returns `false`.
      *
      * @param string $path
-     * @return string|bool
+     * @param octal $chmod
+     * @return bool
+     * @throws Exception If the permissions cannot be written.
      */
-    public function get(string $path)
+    public function chmod(string $path, $chmod)
     {
-        $path = $this->resolvePath($path);
-
-        if (!$path || !is_readable($path)) {
-            throw new Exception('Unable to get file "' . $path . '", please check permissions.');
+        if (!$this->exists($path)) {
+            return false;
         }
 
-        return file_get_contents($path);
+        $path = $this->resolvePath($path);
+
+        try {
+            chmod($path, $chmod);
+        } catch (Throwable $e) {
+            throw new Exception('Unable to chmod "' . $path . '", please check permissions.');
+        }
     }
 
     /**

@@ -53,7 +53,7 @@ class Token
         }
 
         $dataDir = new DataDir();
-        $token = $dataDir->get($this->tokenFile);
+        $token = $dataDir->exists($this->tokenFile);
 
         if (!$token) {
             throw new Exception(
@@ -64,6 +64,6 @@ class Token
             );
         }
 
-        return $this->token;
+        return $dataDir->get($this->tokenFile);
     }
 }

@@ -15,6 +15,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class BaseCommand extends SymfonyCommand
 {
+    /** @var InputInterface Input interface */
+    protected $input;
+
     /** @var OutputInterface Output interface */
     protected $output;
 
@@ -23,6 +26,7 @@ class BaseCommand extends SymfonyCommand
      */
     public function run(InputInterface $input, OutputInterface $output)
     {
+        $this->input = $input;
         $this->output = $output;
 
         // Add success style
@@ -140,5 +144,19 @@ class BaseCommand extends SymfonyCommand
     protected function error(string $text, int $verbosity = OutputInterface::VERBOSITY_NORMAL): void
     {
         $this->output->writeln('<error>' . $text . '</error>', $verbosity);
+    }
+
+    /**
+     * Gets the base directory for the application.
+     *
+     * @param string $path A path to append to the base directory.
+     * @return string
+     */
+    protected function getBaseDir(string $path = '')
+    {
+        return dirname(__DIR__) . ((!empty($path))
+            ? DIRECTORY_SEPARATOR . trim($path, DIRECTORY_SEPARATOR)
+            : ''
+        );
     }
 }
