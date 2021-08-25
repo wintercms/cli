@@ -80,7 +80,7 @@ class Command extends BaseCommand
                 'Your PHP version (' . PHP_VERSION . ') is outdated and not supported by Winter CMS.',
                 'Please upgrade your PHP version to at least 7.2.9.'
             );
-        } elseif (version_compare(PHP_VERSION, '8.0.0', '>=')) {
+        } elseif (version_compare(PHP_VERSION, '8.1.0', '>=')) {
             $this->checkWarned(
                 'Your PHP version (' . PHP_VERSION . ') is untested with Winter CMS.',
                 'You may experience errors and potential data loss.'
