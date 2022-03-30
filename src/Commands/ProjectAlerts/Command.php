@@ -135,7 +135,7 @@ class Command extends BaseCommand
 
         $github->authenticate($token, null, \Github\Client::AUTH_ACCESS_TOKEN);
 
-        foreach (['rain', 'backend', 'cms', 'system'] as $package) {
+        foreach (['storm', 'wn-backend-module', 'wn-cms-module', 'wn-system-module'] as $package) {
             $sourceAdvisories = $github->api('graphql')->execute('{
                 securityVulnerabilities(ecosystem: COMPOSER, package: "winter/' . $package . '", first: 100) {
                     edges {
