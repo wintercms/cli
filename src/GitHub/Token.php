@@ -52,6 +52,14 @@ class Token
             return $this->token;
         }
 
+        // Allow the token to be provided via an environment variable
+        if (!empty($_SERVER['WINTER_CLI_GITHUB_TOKEN'])) {
+            return $this->token = $_SERVER['WINTER_CLI_GITHUB_TOKEN'];
+        }
+        if (!empty($_ENV['WINTER_CLI_GITHUB_TOKEN'])) {
+            return $this->token = $_ENV['WINTER_CLI_GITHUB_TOKEN'];
+        }
+
         $dataDir = new DataDir();
         $token = $dataDir->exists($this->tokenFile);
 
