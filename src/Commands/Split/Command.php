@@ -169,8 +169,13 @@ class Command extends BaseCommand
             $this->createWorkRepo();
         } else {
             $this->line(' - Work repository already exists.');
-            $this->line(' - Updating work repository.');
-            $this->updateWorkRepo();
+            if ($action === 'sync') {
+                $this->line(' - Refreshing work repository.');
+                $this->createWorkRepo();
+            } else {
+                $this->line(' - Updating work repository.');
+                $this->updateWorkRepo();
+            }
         }
 
         // Execute action
