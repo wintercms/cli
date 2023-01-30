@@ -55,5 +55,7 @@ class Command extends BaseCommand
         $path = $token->write($input->getArgument('token'));
 
         $this->success('Token written to ' . $path);
+
+        return 0;
     }
 }

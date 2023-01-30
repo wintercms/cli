@@ -5,3 +5,6 @@ vendor-bin/*
 # Project
 winter.phar
 private/*
+
+# Others
+.DS_Store

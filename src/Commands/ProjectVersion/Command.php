@@ -116,5 +116,7 @@ class Command extends BaseCommand
                 }
             }
         }
+
+        return 0;
     }
 }

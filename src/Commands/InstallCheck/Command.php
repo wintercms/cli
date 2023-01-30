@@ -59,6 +59,8 @@ class Command extends BaseCommand
                 . ' the suggestions in order to allow compatibility.',
                 OutputInterface::VERBOSITY_QUIET
             );
+
+            return 1;
         } elseif ($this->warned) {
             $this->warn(
                 'Winter CMS is compatible with your environment, but certain features may not work or may work'
@@ -69,6 +71,8 @@ class Command extends BaseCommand
         } else {
             $this->success('Winter CMS is fully compatible with your environment.', OutputInterface::VERBOSITY_QUIET);
         }
+
+        return 0;
     }
 
     protected function checkPhpVersion()

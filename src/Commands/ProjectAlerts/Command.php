@@ -73,6 +73,7 @@ class Command extends BaseCommand
                 'Your version of Winter CMS (' . $version . ') has no known security advisories.',
                 OutputInterface::VERBOSITY_QUIET
             );
+
             return 0;
         }
 
