@@ -1,4 +1,4 @@
-<?php namespace Winter\Cli\Commands\ProjectVersion;
+<?php namespace Winter\Cli\Filesystem;
 
 use Exception;
 
